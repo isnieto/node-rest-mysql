@@ -104,5 +104,15 @@ dist
 # TernJS port file
 .tern-port
 
-#Diagrama 
-.drawio/
+# Project directories 
+
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/.idea
+/.vagrant
+/.vscode
+npm-debug.log
+yarn-error.log
+.env

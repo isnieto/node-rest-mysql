@@ -5,12 +5,17 @@
 
 /players: GET, POST, DELETE
 /players/:playerId: GET, PUT, DELETE */
+
+
 module.exports = (app) => {
   
-  const players = require("../api/game.controller.js");
+  const game = require("../api/game.controller.js");
 
   // Retrieve all players from database
-  app.get("/players", players.findAll);
+  app.get("/players", game.findAll);
+
+   // Retrieve a single player with playerId
+   app.get("/players/:playerId", game.findOne);
 
   // Page not available
   app.all("*", (req, res) => {

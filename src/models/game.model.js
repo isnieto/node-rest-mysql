@@ -8,18 +8,18 @@ class Player {
     this.registeredAt = date;
   }
 }
-Player.getAll = (result) => {
-    mysql.query("SELECT * FROM players", (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
 
-      console.log("players: ", res);
-      result(null, res);
-    });
-  };
+Player.getAll = (result) => {
+  mysql.query("SELECT * FROM players", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    console.log("players: ", res);
+    result(null, res);
+  });
+};
 
 // Export
 

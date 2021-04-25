@@ -30,7 +30,7 @@ exports.findOne = (req, res) => {
 
 // Retrieve a single player score list
 exports.gamesAll = (req, res) => {
-  game.getAllScores(req.params.playerId, (err, data) => {
+  game.getAllScoresFromPlayer(req.params.playerId, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -50,7 +50,7 @@ exports.findRanking = (req, res) => {
   game.getRanking((err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "NO data found",
+        message: err.message || "NO data found"
       });
     else res.send(data);
   });
@@ -61,7 +61,7 @@ exports.findWorst = (req, res) => {
   game.findLoser((err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "NO data found",
+        message: err.message || "NO data found"
       });
     else res.send(data);
   });

@@ -11,7 +11,7 @@ class Game {
 
 // Get all data from players
 Game.getAllPlayers = (result) => {
-  mysql.query('SELECT * FROM players', (err, res) => {
+  mysql.query("SELECT * FROM players", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -46,8 +46,9 @@ Game.findById = (playerId, result) => {
 };
 
 // Get all scores from one player
-Game.getAllScores = (playerId, result) => {
-  mysql.query(`SELECT * FROM games WHERE player_id= ${playerId} ORDER BY round ASC`,
+Game.getAllScoresFromPlayer = (playerId, result) => {
+  mysql.query(
+    `SELECT * FROM games WHERE player_id= ${playerId} ORDER BY round ASC`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -60,22 +61,25 @@ Game.getAllScores = (playerId, result) => {
   );
 };
 
-
 // Get ranking of alls players PENDING retorna el jugador amb pitjor el percentatge mig d’èxits
-Game.getRanking = (result) =>{
-  mysql.query('SELECT * FROM games GROUP BY player_id;', (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
+Game.getRanking = (result) => {
+  mysql.query(
+    "SELECT * FROM games GROUP BY player_id ORDER BY result DESC",
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      console.log("Ranking: ", res);
+      result(null, res);
     }
-    console.log("Ranking: ", res);
-    result(null, res);
-  });
-}
+  );
+};
+
 // Get ranking worst player PENDING retorna el jugador amb pitjor percentatge d’èxit
-Game.findLoser = (result) =>{
-  mysql.query('SELECT *, min(result) FROM games', (err, res) => {
+Game.findLoser = (result) => {
+  mysql.query("SELECT *, min(result) FROM games", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -84,10 +88,11 @@ Game.findLoser = (result) =>{
     console.log("loser: ", res);
     result(null, res);
   });
-}
+};
+
 // Get ranking best player PENDING retorna el jugador amb millor percentatge d’èxit
-Game.findWinner = (result) =>{
-  mysql.query('SELECT *, max(result) FROM games', (err, res) => {
+Game.findWinner = (result) => {
+  mysql.query("SELECT *, max(result) FROM games", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -96,7 +101,7 @@ Game.findWinner = (result) =>{
     console.log("winner: ", res);
     result(null, res);
   });
-}
+};
 
 // Export
 module.exports = Game;

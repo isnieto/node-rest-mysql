@@ -32,6 +32,7 @@ SELECT * FROM games WHERE player_id = 1 ORDER BY round ASC;
 SELECT *, min(result) FROM games;
 /*la mejor jugada*/
 select *, max(result) from games;
-/*jugadas de cada jugador */
+/*ranking porcetange de cada jugador */
 select * from games GROUP BY player_id;
+ SELECT * FROM games GROUP BY player_id ORDER BY result DESC;
 

@@ -22,7 +22,7 @@ module.exports = (app) => {
       .status(200)
       .send(
         "<h2>Welcome to DiceGame API</h2><p>Let´s Play</p><a href=/players>players</a><br><a href=/players/1>Single player</a><br> <a href=/players/1/games>Single player score</a>" +
-          "<br><a href=/players/ranking/loser>Worst Player</a><br><a href=/players/ranking/best>Best Player</a>"
+          "<br><a href=/players/ranking:>Ranking Players</a><br><a href=/players/ranking/loser>Worst Player</a><br><a href=/players/ranking/best>Best Player</a>"
       );
   });
 
@@ -36,7 +36,7 @@ module.exports = (app) => {
   app.get("/players/:playerId/games", game.gamesAll);
 
   // Retrieve average ranking of all  players
-  app.get("/players/ranking", game.findRanking);
+  app.get("/players/ranking/:", game.findRanking);
 
   // Retrieve worst player
   app.get("/players/ranking/loser", game.findWorst);

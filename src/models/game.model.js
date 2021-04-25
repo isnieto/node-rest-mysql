@@ -103,5 +103,15 @@ Game.findWinner = (result) => {
   });
 };
 
+Game.updateById = (playerId, newName, result) => {
+  mysql.query(
+    `UPDATE players SET nickName = ${newName} WHERE player_id=${playerId}`,
+    (err, result) => {
+      if (err) throw err;
+      console.log(result.affectedRows + " record(s) updated");
+    }
+  );
+};
+
 // Export
 module.exports = Game;

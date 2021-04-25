@@ -22,7 +22,8 @@ module.exports = (app) => {
       .status(200)
       .send(
         "<h2>Welcome to DiceGame API</h2><p>Let´s Play</p><a href=/players>players</a><br><a href=/players/1>Single player</a><br> <a href=/players/1/games>Single player score</a>" +
-          "<br><a href=/players/ranking:>Ranking Players</a><br><a href=/players/ranking/loser>Worst Player</a><br><a href=/players/ranking/best>Best Player</a>"
+          "<br><a href=/players/ranking/:>Ranking Players</a><br><a href=/players/ranking/loser>Worst Player</a><br><a href=/players/ranking/best>Best Player</a>" +
+          "<br><a href=/players>Update Player</a>"
       );
   });
 
@@ -44,9 +45,9 @@ module.exports = (app) => {
   // Retrieve best player
   app.get("/players/ranking/best", game.findBest);
 
-  /* // Update data of one player
-  app.put("/players/:playerId", game.update);
-  
+  // Update data of one player
+  app.put("/players/:playerId", game.updatePlayer);
+  /* 
   // Delete a Playger with playerId
   app.delete("/players/:playerId", game.delete);
   

@@ -77,3 +77,13 @@ exports.findBest = (req, res) => {
     else res.send(data);
   });
 };
+
+// Update player name
+exports.updatePlayer = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+}

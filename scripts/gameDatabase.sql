@@ -36,3 +36,6 @@ select *, max(result) from games;
 select * from games GROUP BY player_id;
  SELECT * FROM games GROUP BY player_id ORDER BY result DESC;
 
+ // Update Name 
+ UPDATE players SET nickName = 'Canyon33' WHERE player_id= 1;
+

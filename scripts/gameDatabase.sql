@@ -18,3 +18,20 @@ CREATE TABLE `players` (
   ON DELETE CASCADE  
   ON UPDATE CASCADE  
 );  
+
+INSERT INTO players (nickName, registeredAt) VALUES ( 'manolito', CURDATE());
+INSERT INTO games (round, result, player_id) VALUES ( NOW(), 5, 1);
+
+UPDATE players SET nickName = '????' WHERE player_id = '??';
+
+DELETE FROM players/games WHERE player_id = '???';
+
+SELECT * FROM games WHERE player_id = 1 ORDER BY round ASC; 
+
+/*la peor jugada*/
+SELECT *, min(result) FROM games;
+/*la mejor jugada*/
+select *, max(result) from games;
+/*jugadas de cada jugador */
+select * from games GROUP BY player_id;
+

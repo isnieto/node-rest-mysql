@@ -7,20 +7,19 @@ class Game {
     this.nickName = playerName;
     this.registeredAt = date;
   }
-}
-
-// Get all data from players
-Game.getAllPlayers = (result) => {
-  mysql.query("SELECT * FROM players", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-    console.log("players: ", res);
-    result(null, res);
-  });
-};
+  // Get all data from players
+  static getAllPlayers(result) {
+    return new Promise((resolve, reject) => {
+      mysql.query("SELECT * FROM players", (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        //console.log("players: ", res);
+        resolve(result(null, res));
+      });
+    });
+  }
+} // END CLass Game
 
 // Get one player by ID
 Game.findById = (playerId, result) => {
@@ -63,18 +62,15 @@ Game.getAllScoresFromPlayer = (playerId, result) => {
 
 // Get ranking of alls players PENDING retorna el jugador amb pitjor el percentatge mig d’èxits
 Game.getRanking = (result) => {
-  mysql.query(
-    "SELECT * FROM games GROUP BY player_id ORDER BY result DESC",
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-      console.log("Ranking: ", res);
-      result(null, res);
+  mysql.query("SELECT * FROM games ORDER BY result DESC", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
     }
-  );
+    console.log("Ranking: ", res);
+    result(null, res);
+  });
 };
 
 // Get ranking worst player PENDING retorna el jugador amb pitjor percentatge d’èxit

@@ -1,5 +1,5 @@
 // Setting route controllers for all endpoint of th app
-//const express = require("express"); for Router() needed;
+const express = require("express"); //or Router() needed;
 
 /* These are routes we define:
 

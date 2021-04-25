@@ -10,6 +10,19 @@ class Game {
 }
 
 
+Game.create = (newPlayer, result) => {
+  myssql.query("INSERT INTO players SET ?", newPlayer, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    console.log("created player: ", { player_id: res.insertId, ...newPlayer });
+    result(null, { player_id: res.insertId, ...newPlayer });
+  });
+};
+
 // Get all data from players
 Game.getAll = (result) => {
   mysql.query("SELECT * FROM players", (err, res) => {

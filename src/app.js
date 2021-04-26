@@ -1,4 +1,4 @@
-// Configure the app
+// Load express framework and Configure the app
 const express = require("express");
 const app = express();
 

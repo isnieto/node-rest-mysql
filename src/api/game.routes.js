@@ -47,6 +47,10 @@ module.exports = (app) => {
 
   // Update data of one player
   app.put("/players/:playerId", game.updatePlayer);
+ 
+  // Update data of one player
+  app.post("/players:", game.createNewPlayer);
+ 
   /* 
   // Delete a Playger with playerId
   app.delete("/players/:playerId", game.delete);

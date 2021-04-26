@@ -3,6 +3,6 @@
 module.exports = {
   HOST: "localhost",
   USER: "ismael",
-  PASSWORD: "Netnet44$$",
+  PASSWORD: "netnet44",
   DB: "dicegame"
 };

@@ -16,16 +16,6 @@ DELETE /players/{id}/games: elimina les tirades del jugador
 module.exports = (app) => {
   const game = require("../api/game.controller.js");
 
-  // Create a new Customer
-  app.get("/", (req, res) => {
-    res
-      .status(200)
-      .send(
-        "<h2>Welcome to DiceGame API</h2><p>Let´s Play</p><a href=/players>players</a><br><a href=/players/1>Single player</a><br> <a href=/players/1/games>Single player score</a>" +
-          "<br><a href=/players/ranking/:>Ranking Players</a><br><a href=/players/ranking/loser>Worst Player</a><br><a href=/players/ranking/best>Best Player</a>" +
-          "<br><a href=/players>Update Player</a>"
-      );
-  });
 
   // Retrieve all players from database
   app.get("/players", game.findAll);
@@ -34,32 +24,32 @@ module.exports = (app) => {
   app.get("/players/:playerId", game.findOne);
 
   // Retrieve a single player score list
-  app.get("/players/:playerId/games", game.gamesAll);
+  app.get("/players/:playerId/games:", game.gamesAll);
 
   // Retrieve average ranking of all  players
   app.get("/players/ranking/:", game.findRanking);
 
   // Retrieve worst player
-  app.get("/players/ranking/loser", game.findWorst);
+  app.get("/players/ranking/loser:", game.findWorst);
 
   // Retrieve best player
-  app.get("/players/ranking/best", game.findBest);
+  app.get("/players/ranking/winner:", game.findBest);
 
   // Update data of one player
-  app.put("/players/:playerId", game.updatePlayer);
+  //app.put("/players/:playerId", game.updatePlayer);
  
   // Update data of one player
-  app.post("/players:", game.createNewPlayer);
+  //app.post("/players:", game.createNewPlayer);
  
-  /* 
   // Delete a Playger with playerId
-  app.delete("/players/:playerId", game.delete);
+  app.delete("/players/:playerId/games:", game.deleteAll);
   
+  /*
   // Create a new Player
   app.delete("/players", players.deleteAll); */
 
   // Page not available
   app.all("*", (req, res) => {
-    res.status(404).send("Ops. Page not available at this moment");
+    res.status(404).send("ERROR 404. This page is not available.");
   });
 };

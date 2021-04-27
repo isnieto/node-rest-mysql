@@ -62,7 +62,7 @@ module.exports = {
 
   // Retrieve best player
   findWorst: (req, res) => {
-    game.findWinner((err, data) => {
+    game.findLoser((err, data) => {
       if (err)
         res.status(500).send({
           message: err.message || "NO data found",
@@ -82,48 +82,18 @@ module.exports = {
     });
   },
 
-  // Update player name
-  updatePlayer: (req, res) => {
-    if (!req.body) {
-      res.send("Content can NOT be empty!");
-    } else {
-      res.send("We got the data " + req.body);
-      updateById(req.body);
-    }
-  },
-
-  // Create new player
-  createNewPlayer: (req, res) => {
-    if (!req.body.nickName) {
-      return res.status(400).send({
-        nickName: "Sorry, name can not be empty!",
+  // Delete one player by ID
+  deleteAll: (req, res) => {
+    game.deleteGames(req.params.playerId, (err, data) => {
+      if (err)
+      res.status(500).send({
+        message: err.message || "NO data found",
       });
-    } else {
-      // Create a new Player
-      const player = new game(req.body.nickName);
-      game.checkPlayerName(player, (err, data) => {
-        if (err) {
-          res.status(500).send({
-            message: err.message || "Some error occurred while sending `data`.",
-          });
-        } else {
-          if (!res.send) {
-            console.log("Player already in Database");
-          } else {
-            console.log("Player can be added  in Database");
-          }
-        }
-      });
+      else res.send(data);
+    });
 
-      /* game.newPlayer(player, (err, data) => {
-          if (err) {
-            res.status(500).send({
-              message: err.message || "Some error occurred while sending `data`.",
-            });
-          } else {
-             res.send("new Player added");
-          }
-        }); */
-    }
-  },
+  }
+
+
+  
 }; // End Module

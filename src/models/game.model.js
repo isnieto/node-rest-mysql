@@ -57,7 +57,9 @@ class Game {
   }
   // Get ranking of alls players PENDING retorna el jugador amb pitjor el percentatge mig d’èxits
   static getRanking(result) {
-    mysql.query("SELECT * FROM games ORDER BY result DESC", (err, res) => {
+    let querySQL =
+      " SELECT p.nickName, count(*) AS Games, CONCAT( ROUND(((sum(g.won) * 100) / count(*)), 0), '%')  as Percentage FROM games g LEFT JOIN players p ON g.player_id=p.player_Id GROUP BY g.player_id order by ((sum(won) * 100) / count(*)) DESC;";
+    mysql.query(querySQL, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -69,7 +71,9 @@ class Game {
   }
   // Get ranking worst player PENDING retorna el jugador amb pitjor percentatge d’èxit
   static findLoser(result) {
-    mysql.query("SELECT *, min(result) FROM games", (err, res) => {
+    let querySQL =
+      "SELECT p.nickName, count(*) AS Games, CONCAT( ROUND(((sum(g.won) * 100) / count(*)), 0), '%')  as Percentage FROM games g LEFT JOIN players p ON g.player_id=p.player_Id GROUP BY g.player_id order by ((sum(won) * 100) / count(*)) ASC LIMIT 1;";
+    mysql.query(querySQL, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -81,7 +85,9 @@ class Game {
   }
   // Get ranking best player PENDING retorna el jugador amb millor percentatge d’èxit
   static findWinner(result) {
-    mysql.query("SELECT *, max(result) FROM games", (err, res) => {
+    let querySQL =
+      "SELECT p.nickName, count(*) AS Games, CONCAT( ROUND(((sum(g.won) * 100) / count(*)), 0), '%')  as Percentage FROM games g LEFT JOIN players p ON g.player_id=p.player_Id GROUP BY g.player_id order by ((sum(won) * 100) / count(*)) DESC LIMIT 1;";
+    mysql.query(querySQL, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -91,7 +97,22 @@ class Game {
       result(null, res);
     });
   }
-  static updateById(playerId, newName, result) {
+
+  // Delete all games of one player
+  static deleteGames(playerId, result) {
+    let querySQL = `DELETE FROM games WHERE player_id=${playerId}`;
+    mysql.query(querySQL,  (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      console.log("Done: ", res);
+      result(null, res);
+    })
+  } 
+
+ /*  static updateById(playerId, newName, result) {
     mysql.query(
       `UPDATE players SET nickName = ${newName} WHERE player_id=${playerId}`,
       (err, result) => {
@@ -102,30 +123,29 @@ class Game {
   }
   static newPlayer(newPlayer, result) {
     mysql.query(
-        `INSERT INTO players (nickName, registeredAt) VALUES ('${newPlayer.nickName}', CURDATE())`,
-        (err, res) => {
-          if (err) {
-            res.send( err);
-          }
-          //console.log("players: ", res);
-          result(null, res);
+      `INSERT INTO players (nickName, registeredAt) VALUES ('${newPlayer.nickName}', CURDATE())`,
+      (err, res) => {
+        if (err) {
+          res.send(err);
         }
-      );
+        //console.log("players: ", res);
+        result(null, res);
+      }
+    );
   }
   // Check if playerName already taken
   static checkPlayerName(newPlayer, result) {
     mysql.query(
-        `SELECT nickName FROM players WHERE nickName = ${newPlayer.nickName}`, (err, res) => {
-          if (err) {
-            result(res, null);
-          }
-          console.log("players exists ");
-          result(null, res);
+      `SELECT nickName FROM players WHERE nickName = ${newPlayer.nickName}`,
+      (err, res) => {
+        if (err) {
+          result(res, null);
         }
-      );
-  }
-
-
+        console.log("players exists ");
+        result(null, res);
+      }
+    );
+  } */
 } // END CLass Game
 
 // Export

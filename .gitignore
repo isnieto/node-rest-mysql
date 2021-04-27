@@ -116,3 +116,4 @@ dist
 npm-debug.log
 yarn-error.log
 #.env
+/__test__

@@ -19,13 +19,3 @@ connection.connect((error) => {
 
 module.exports = connection;
 
-// Connecting to the database moongoose
-/* mongoose.connect(dbConfig.url, {
-    useNewUrlParser: true
- }).then(() => {
-    console.log("Successfully connected to the express-mongo-app database");
- }).catch(err => {
-    console.log('Could not connect to the database. Exiting now...', err);
-    process.exit();
- });
-  */

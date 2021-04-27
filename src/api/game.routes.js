@@ -18,7 +18,7 @@ module.exports = (app) => {
 
 
   // Retrieve all players from database
-  app.get("/players", game.findAll);
+  app.get("/players/:", game.findAll);
 
   // Retrieve a single player data by playerId
   app.get("/players/:playerId", game.findOne);
@@ -35,18 +35,11 @@ module.exports = (app) => {
   // Retrieve best player
   app.get("/players/ranking/winner:", game.findBest);
 
-  // Update data of one player
-  //app.put("/players/:playerId", game.updatePlayer);
- 
-  // Update data of one player
-  //app.post("/players:", game.createNewPlayer);
- 
   // Delete a Playger with playerId
   app.delete("/players/:playerId/games:", game.deleteAll);
   
-  /*
-  // Create a new Player
-  app.delete("/players", players.deleteAll); */
+ 
+
 
   // Page not available
   app.all("*", (req, res) => {

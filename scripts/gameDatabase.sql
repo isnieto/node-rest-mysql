@@ -22,10 +22,9 @@ CREATE TABLE `players` (
 
 INSERT INTO players (nickName, registeredAt) VALUES ( 'manolito', CURDATE()), ( 'Pepon', CURDATE()),  ( 'menganito', CURDATE()), ( 'Kevin', CURDATE()) ;
 INSERT INTO games (round, result, player_id, won) VALUES ( NOW(), 5, 1, 0);
-
 UPDATE players SET nickName = '????' WHERE player_id = '??';
-
 DELETE FROM players/games WHERE player_id = '???';
+
 
 SELECT * FROM games WHERE player_id = 1 ORDER BY round ASC; 
 
@@ -55,13 +54,13 @@ select * from games GROUP BY player_id;
 
 
  /*
- POST: /players : crea un jugador
+POST: /players: crea un jugador
 PUT /players : modifica el nom del jugador
 POST /players/{id}/games/ : un jugador específic realitza una tirada dels daus.
-DELETE /players/{id}/games: elimina les tirades del jugador
-GET /players/: retorna el llistat de tots els jugadors del sistema amb el seu percentatge mig d’èxits
-GET /players/{id}/games: retorna el llistat de jugades per un jugador.
-GET /players/ranking: retorna el ranking mig de tots els jugadors del sistema. És a dir, el percentatge mig d’èxits.
-GET /players/ranking/loser: retorna el jugador amb pitjor percentatge d’èxit
-GET /players/ranking/winner: retorna el jugador amb pitjor percentatge d’èxit*/
+[DONE] DELETE /players/{id}/games: elimina les tirades del jugador
+[DONE] GET /players/: retorna el llistat de tots els jugadors del sistema amb el seu percentatge mig d’èxits
+[DONE] GET /players/{id}/games: retorna el llistat de jugades per un jugador.
+[DONE] GET /players/ranking: retorna el ranking mig de tots els jugadors del sistema. És a dir, el percentatge mig d’èxits.
+[DONE] GET /players/ranking/loser: retorna el jugador amb pitjor percentatge d’èxit
+[DONE] GET /players/ranking/winner: retorna el jugador amb pitjor percentatge d’èxit*/
 

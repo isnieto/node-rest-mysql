@@ -85,10 +85,10 @@ module.exports = {
   // Delete one player by ID
   deleteAll: (req, res) => {
     game.deleteGames(req.params.playerId, (err, data) => {
-      if (err)
-      res.status(500).send({
-        message: err.message || "NO data found",
-      });
+          if (err)
+        res.status(500).send({
+          message: err.message || "NO data found",
+        });
       else res.send(data);
     });
 

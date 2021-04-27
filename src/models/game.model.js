@@ -1,65 +1,59 @@
 //  Import db.connection
 const mysql = require("./db.js");
+const queries = require("../services/mysql-queries.js");
 
 //  Player class and use the database connection above to add  CRUD methods:
 class Game {
   constructor(playerName) {
     this.nickName = playerName;
   }
+
   // Get all data from players
   static getAllPlayers(result) {
     return new Promise((resolve, reject) => {
-      mysql.query("SELECT * FROM players", (err, res) => {
+      mysql.query(queries.getAllPlayers, (err, res) => {
         if (err) {
           reject(err);
         }
-        //console.log("players: ", res);
         resolve(result(null, res));
       });
     });
   }
+
   // Get one player by ID
   static findById(playerId, result) {
-    mysql.query(
-      `SELECT * FROM players WHERE player_id = ${playerId}`,
-      (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-          result(err, null);
-          return;
-        }
-
-        if (res.length) {
-          console.log("found player: ", res[0]);
-          result(null, res[0]);
-          return;
-        }
-
-        // not found player with the id
-        result({ player: "not_found" }, null);
+    mysql.query(queries.getOnePlayer(playerId), (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
       }
-    );
+
+      if (res.length) {
+        console.log("found player: ", res[0]);
+        result(null, res[0]);
+        return;
+      }
+
+      // not found player with the id
+      result({ player: "not_found" }, null);
+    });
   }
   // Get all scores from one player
   static getAllScoresFromPlayer(playerId, result) {
-    mysql.query(
-      `SELECT * FROM games WHERE player_id= ${playerId} ORDER BY round ASC`,
-      (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-          result(null, err);
-          return;
-        }
-        console.log("scores: ", res);
-        result(null, res);
+    mysql.query(queries.getScorePlayer(playerId), (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
       }
-    );
+      console.log("scores: ", res);
+      result(null, res);
+    });
   }
   // Get ranking of alls players PENDING retorna el jugador amb pitjor el percentatge mig d’èxits
   static getRanking(result) {
-    let querySQL =
-      " SELECT p.nickName, count(*) AS Games, CONCAT( ROUND(((sum(g.won) * 100) / count(*)), 0), '%')  as Percentage FROM games g LEFT JOIN players p ON g.player_id=p.player_Id GROUP BY g.player_id order by ((sum(won) * 100) / count(*)) DESC;";
-    mysql.query(querySQL, (err, res) => {
+    mysql.query(queries.getRankigAll, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -71,9 +65,7 @@ class Game {
   }
   // Get ranking worst player PENDING retorna el jugador amb pitjor percentatge d’èxit
   static findLoser(result) {
-    let querySQL =
-      "SELECT p.nickName, count(*) AS Games, CONCAT( ROUND(((sum(g.won) * 100) / count(*)), 0), '%')  as Percentage FROM games g LEFT JOIN players p ON g.player_id=p.player_Id GROUP BY g.player_id order by ((sum(won) * 100) / count(*)) ASC LIMIT 1;";
-    mysql.query(querySQL, (err, res) => {
+    mysql.query(queries.getWortRanking, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -85,9 +77,7 @@ class Game {
   }
   // Get ranking best player PENDING retorna el jugador amb millor percentatge d’èxit
   static findWinner(result) {
-    let querySQL =
-      "SELECT p.nickName, count(*) AS Games, CONCAT( ROUND(((sum(g.won) * 100) / count(*)), 0), '%')  as Percentage FROM games g LEFT JOIN players p ON g.player_id=p.player_Id GROUP BY g.player_id order by ((sum(won) * 100) / count(*)) DESC LIMIT 1;";
-    mysql.query(querySQL, (err, res) => {
+    mysql.query(queries.getBestRanking, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -100,8 +90,7 @@ class Game {
 
   // Delete all games of one player
   static deleteGames(playerId, result) {
-    let querySQL = `DELETE FROM games WHERE player_id=${playerId}`;
-    mysql.query(querySQL,  (err, res) => {
+    mysql.query(queries.deleteGamesPlayer(playerId), (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -109,10 +98,10 @@ class Game {
       }
       console.log("Done: ", res);
       result(null, res);
-    })
-  } 
+    });
+  }
 
- /*  static updateById(playerId, newName, result) {
+  /*  static updateById(playerId, newName, result) {
     mysql.query(
       `UPDATE players SET nickName = ${newName} WHERE player_id=${playerId}`,
       (err, result) => {

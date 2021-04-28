@@ -101,7 +101,7 @@ class Game {
         }
         let confirmation = "created player: " + playerName;
         console.log(confirmation);
-        resolve(confirmation);
+        resolve(res);
       });
     });
   }

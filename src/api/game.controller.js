@@ -105,10 +105,10 @@ module.exports = {
       let playerId = req.params.playerId;
       let score = await gameplay();
       await Game.addScore(playerId, score);
-      res.status(201);
+      res.json({ status: "New game added" })
     } catch (e) {
-      console.log(e.message);
-      res.sendStatus(500);
+      //console.error(`Unable to issue find command: ${e}`);
+      res.status(500).json({ error: e.message })
     }
   },
 }; // End Module

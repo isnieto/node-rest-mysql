@@ -1,6 +1,6 @@
 //  Import db.connection
 const mysql = require("./db.js");
-const queries = require("../services/mysql-queries.js");
+const queries = require("./mysql-queries.js");
 
 //  Player class and use the database connection above to add  CRUD methods:
 class Game {
@@ -22,82 +22,70 @@ class Game {
 
   // Get one player by ID
   static findById(playerId, result) {
-    mysql.query(queries.getOnePlayer(playerId), (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-        return;
-      }
-
-      if (res.length) {
-        console.log("found player: ", res[0]);
-        result(null, res[0]);
-        return;
-      }
-
-      // not found player with the id
-      result({ player: "not_found" }, null);
+    return new Promise((resolve, reject) => {
+      mysql.query(queries.getOnePlayer(playerId), (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result(null, res));
+      });
     });
-  }
+  } // Ende findByID
+
   // Get all scores from one player
   static getAllScoresFromPlayer(playerId, result) {
-    mysql.query(queries.getScorePlayer(playerId), (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-      console.log("scores: ", res);
-      result(null, res);
+    return new Promise((resolve, reject) => {
+      mysql.query(queries.getScorePlayer(playerId), (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result(null, res));
+      });
     });
   }
   // Get ranking of alls players PENDING retorna el jugador amb pitjor el percentatge mig d’èxits
   static getRanking(result) {
-    mysql.query(queries.getRankigAll, (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-      console.log("Ranking: ", res);
-      result(null, res);
+    return new Promise((resolve, reject) => {
+      mysql.query(queries.getRankigAll, (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result(null, res));
+      });
     });
   }
   // Get ranking worst player PENDING retorna el jugador amb pitjor percentatge d’èxit
   static findLoser(result) {
-    mysql.query(queries.getWortRanking, (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-      console.log("loser: ", res);
-      result(null, res);
+    return new Promise((resolve, reject) => {
+      mysql.query(queries.getWortRanking, (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result(null, res));
+      });
     });
   }
   // Get ranking best player PENDING retorna el jugador amb millor percentatge d’èxit
   static findWinner(result) {
-    mysql.query(queries.getBestRanking, (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-      console.log("winner: ", res);
-      result(null, res);
+    return new Promise((resolve, reject) => {
+      mysql.query(queries.getBestRanking, (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result(null, res));
+      });
     });
   }
 
   // Delete all games of one player
   static deleteGames(playerId, result) {
-    mysql.query(queries.deleteGamesPlayer(playerId), (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-        return;
-      }
-      console.log("Done: ", res);
-      result(null, res);
+    return new Promise((resolve, reject) => {
+      mysql.query(queries.deleteGamesPlayer(playerId), (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result(null, res));
+      });
     });
   }
 

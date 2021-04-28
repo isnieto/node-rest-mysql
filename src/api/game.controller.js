@@ -103,7 +103,7 @@ module.exports = {
   playOneGame: async (req, res) => {
     try {
       let playerId = req.params.playerId;
-      let score = gameplay;
+      let score = await gameplay();
       await Game.addScore(playerId, score);
       res.status(201);
     } catch (e) {

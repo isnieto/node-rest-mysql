@@ -101,6 +101,9 @@ dist
 # DynamoDB Local files
 .dynamodb/
 
+# Single files
+ToDoList.txt
+
 # TernJS port file
 .tern-port
 

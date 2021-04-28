@@ -1,6 +1,7 @@
 //  Import db.connection
 const mysql = require("./db.js");
 const queries = require("../config/mysql-queries.js");
+const { promise } = require("./db.js");
 
 //  Player class and use the database connection above to add  CRUD methods:
 class Game {
@@ -43,7 +44,7 @@ class Game {
       });
     });
   }
-  
+
   // Get ranking of alls players PENDING retorna el jugador amb pitjor el percentatge mig d’èxits
   static getRanking() {
     return new Promise((resolve, reject) => {
@@ -55,7 +56,7 @@ class Game {
       });
     });
   }
-  
+
   // Get ranking worst player PENDING retorna el jugador amb pitjor percentatge d’èxit
   static findLoser() {
     return new Promise((resolve, reject) => {
@@ -67,7 +68,7 @@ class Game {
       });
     });
   }
- 
+
   // Get ranking best player PENDING retorna el jugador amb millor percentatge d’èxit
   static findWinner() {
     return new Promise((resolve, reject) => {
@@ -79,7 +80,7 @@ class Game {
       });
     });
   }
-  
+
   // Delete all games of one player
   static deleteGames(playerId) {
     return new Promise((resolve, reject) => {
@@ -91,6 +92,31 @@ class Game {
       });
     });
   }
+
+  static newPlayer(playerName) {
+    return new Promise((reject, resolve) => {
+      mysql.query(queries.createNewPlayer(playerName), (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        let confirmation = "created player: " + playerName;
+        console.log(confirmation);
+        resolve(confirmation);
+      });
+    });
+  }
+
+  static addScore(playerId, result) {
+    return new Promise((reject, resolve) => {
+      mysql.query(queries.addNewGame(playerId, result), (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+    });
+  }
+
 } // END CLass Game
 
 // Export

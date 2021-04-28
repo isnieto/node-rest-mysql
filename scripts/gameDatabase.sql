@@ -25,6 +25,8 @@ INSERT INTO games (round, result, player_id, won) VALUES ( NOW(), 5, 1, 0);
 UPDATE players SET nickName = '????' WHERE player_id = '??';
 DELETE FROM players/games WHERE player_id = '???';
 
+/* results of game adding 1 or 0 depending on score*/
+INSERT INTO games (round, result, player_id, won) VALUES ( NOW(), 7, 1, ( CASE WHEN result >= 6 THEN 1 ELSE 0 END));
 
 SELECT * FROM games WHERE player_id = 1 ORDER BY round ASC; 
 
@@ -54,9 +56,9 @@ select * from games GROUP BY player_id;
 
 
  /*
-POST: /players: crea un jugador
+[in process] POST: /players: crea un jugador
 PUT /players : modifica el nom del jugador
-POST /players/{id}/games/ : un jugador específic realitza una tirada dels daus.
+POST /players/{id}/games/: un jugador específic realitza una tirada dels daus.
 [DONE] DELETE /players/{id}/games: elimina les tirades del jugador
 [DONE] GET /players/: retorna el llistat de tots els jugadors del sistema amb el seu percentatge mig d’èxits
 [DONE] GET /players/{id}/games: retorna el llistat de jugades per un jugador.

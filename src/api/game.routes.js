@@ -16,7 +16,12 @@ DELETE /players/{id}/games: elimina les tirades del jugador
 module.exports = (app) => {
   const game = require("../api/game.controller.js");
 
-
+  // Delete a Playger with playerId
+  app.post("/players:", game.createOne);
+  
+  // Delete a Playger with playerId
+  app.post("/players/:playerId/games/:", game.playOneGame);
+ 
   // Retrieve all players from database
   app.get("/players/:", game.findAll);
 
@@ -37,9 +42,8 @@ module.exports = (app) => {
 
   // Delete a Playger with playerId
   app.delete("/players/:playerId/games:", game.deleteAll);
-  
- 
 
+ 
 
   // Page not available
   app.all("*", (req, res) => {

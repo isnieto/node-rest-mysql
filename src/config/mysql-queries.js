@@ -1,5 +1,12 @@
 module.exports = {
-  getAllPlayers: `SELECT * FROM players`,
+  createNewPlayer: (playerName) => {
+    return `INSERT INTO players (nickName, registeredAt) VALUES ( '${playerName}', CURDATE())`;
+  },
+
+  addNewGame: (playerId, result) => {
+    return `INSERT INTO games (round, result, player_id, won) VALUES ( NOW(), '${result}', '${playerId}', (CASE WHEN result >= 6 THEN 1 ELSE 0 END));`;
+  },
+
   getOnePlayer: (playerId) => {
     return `SELECT * FROM players WHERE player_id = ${playerId}`;
   },
@@ -7,6 +14,8 @@ module.exports = {
   getScorePlayer: (playerId) => {
     return `SELECT * FROM games WHERE player_id= ${playerId} ORDER BY round ASC`;
   },
+
+  getAllPlayers: `SELECT * FROM players`,
 
   getRankigAll:
     "SELECT p.nickName, count(*) AS Games, CONCAT( ROUND(((sum(g.won) * 100) / count(*)), 0), '%')" +

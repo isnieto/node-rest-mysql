@@ -14,35 +14,35 @@ DELETE /players/{id}/games: elimina les tirades del jugador
 [IN PROCESS] GET /players/ranking/winner: retorna el jugador amb millor percentatge d’èxit*/
 
 module.exports = (app) => {
-  const game = require("../api/game.controller.js");
+  const gameController = require("../api/game.controller.js");
 
   // Delete a Playger with playerId
   //app.post("/players:", game.createOne);
-  app.post("/players:", game.checkPlayer);
+  app.post("/players:", gameController.checkPlayer);
 
   // Delete a Playger with playerId
-  app.post("/players/:playerId/games/:", game.playOneGame);
+  //app.post("/players/:playerId/games/:", gameController.playOneGame);
 
   // Retrieve all players from database
-  app.get("/players/:", game.findAll);
+  app.get("/players/:", gameController.findAll);
 
   // Retrieve a single player data by playerId
-  app.get("/players/:playerId", game.findOne);
+  app.get("/players/:playerId", gameController.findOne);
 
   // Retrieve a single player score list
-  app.get("/players/:playerId/games:", game.gamesAll);
+  app.get("/players/:playerId/games:", gameController.gamesAll);
 
   // Retrieve average ranking of all  players
-  app.get("/players/ranking/:", game.findRanking);
-
+  app.get("/players/ranking/:", gameController.findRanking);
+ 
   // Retrieve worst player
-  app.get("/players/ranking/loser:", game.findWorst);
+  app.get("/players/ranking/loser:", gameController.findWorst);
 
   // Retrieve best player
-  app.get("/players/ranking/winner:", game.findBest);
+  app.get("/players/ranking/winner:", gameController.findBest);
 
   // Delete a Playger with playerId
-  app.delete("/players/:playerId/games:", game.deleteAll);
+  app.delete("/players/:playerId/games:", gameController.deleteAll);
 
   // Page not available
   app.all("*", (req, res) => {

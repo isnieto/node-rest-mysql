@@ -8,7 +8,7 @@ const gameplay = require("../services/games.services.js");
 module.exports = {
   findAll: async (req, res) => {
     try {
-      const results = await Game.getAllPlayers();
+      const results = await Player.getAllPlayers();
       res.status(201).send(results);
     } catch (e) {
       console.log(e.message);
@@ -38,7 +38,7 @@ module.exports = {
     }
   },
 
-  // Retrieve worst player
+  // Retrieve Ranking of all players
   findRanking: async (req, res) => {
     try {
       const results = await Game.getRanking();

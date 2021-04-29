@@ -43,7 +43,7 @@ class Game {
   // Get ranking worst player PENDING retorna el jugador amb pitjor percentatge d’èxit
   static findLoser() {
     return new Promise((resolve, reject) => {
-      mysql.query(queries.getWortRanking, (err, res) => {
+      mysql.query(queries.getWorstRanking, (err, res) => {
         if (err) {
           reject(err);
         }

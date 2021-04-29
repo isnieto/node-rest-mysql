@@ -15,6 +15,10 @@ module.exports = {
     return `SELECT * FROM games WHERE player_id= ${playerId} ORDER BY round ASC`;
   },
 
+  checkData: (playerName) => {
+    return `SELECT * FROM players WHERE nickName = '${playerName}'`;
+  },
+
   getAllPlayers: `SELECT * FROM players`,
 
   getRankigAll:

@@ -117,6 +117,22 @@ class Game {
     });
   }
 
+  static checkIfPlayer(playerName) {
+    return new Promise((reject, resolve)=>{
+      mysql.query(queries.checkData(playerName), (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log("Hola");
+
+          if(!res) {resolve("No result")}
+          resolve(res);
+        }
+        
+       
+      });
+    });
+  }
 } // END CLass Game
 
 // Export

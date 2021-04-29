@@ -1,3 +1,4 @@
+const { restart } = require("nodemon");
 const Game = require("../models/Game.model.js");
 const gameplay = require("../services/games.services.js");
 
@@ -92,10 +93,9 @@ module.exports = {
       try {
         const player = new Game(req.body.name);
         await Game.newPlayer(player.nickName);
-        res.status(201).send(results);
+        res.json({ status: `New game added ${player.nickName}` });
       } catch (e) {
-        console.log(e.message);
-        res.sendStatus(500);
+        res.status(500).json({ error: e.message });
       }
     }
   },
@@ -105,10 +105,20 @@ module.exports = {
       let playerId = req.params.playerId;
       let score = await gameplay();
       await Game.addScore(playerId, score);
-      res.json({ status: "New game added" })
+      res.json({ status: "New game added" });
     } catch (e) {
-      //console.error(`Unable to issue find command: ${e}`);
-      res.status(500).json({ error: e.message })
+      res.status(500).json({ error: e.message });
     }
+  },
+
+  checkPlayer: async (req, res) => {
+    try {
+      let playerName = req.body.name;
+      let data = await Game.checkIfPlayer(playerName);
+      res.json({ info: `${data}` });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+    return res;
   },
 }; // End Module

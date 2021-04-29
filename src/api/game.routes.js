@@ -17,7 +17,8 @@ module.exports = (app) => {
   const game = require("../api/game.controller.js");
 
   // Delete a Playger with playerId
-  app.post("/players:", game.createOne);
+  //app.post("/players:", game.createOne);
+  app.post("/players:", game.checkPlayer);
 
   // Delete a Playger with playerId
   app.post("/players/:playerId/games/:", game.playOneGame);

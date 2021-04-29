@@ -8,6 +8,22 @@ class Player {
   constructor(playerName) {
     this.nickName = playerName;
   }
+  
+   // Check if PlayerName already existes in database
+   static checkIfPlayer(playerName) {
+    return new Promise((reject, resolve) => {
+      mysql.query(queries.checkData(playerName), (err, res) => {
+        // If Name no exists response is NULL
+        if (res.length === 0) {
+          console.log("Name not found in  database");
+          resolve({ message: "Name not found in  database" });
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
+  
   // Create new Player [ IN PROCESS ]
   static newPlayer(playerName) {
     return new Promise((reject, resolve) => {
@@ -34,20 +50,7 @@ class Player {
     });
   } // Ende findByID
 
-  // Check if PlayerName already existes in database
-  static checkIfPlayer(playerName) {
-    return new Promise((reject, resolve) => {
-      mysql.query(queries.checkData(playerName), (err, res) => {
-        // If Name no exists response is NULL
-        if (res.length === 0) {
-          console.log("Name not found in  database");
-          resolve({ message: "Name not found in  database" });
-        } else {
-          reject(err);
-        }
-      });
-    });
-  }
+ 
 
   // Get all data from players
   static getAllPlayers() {

@@ -20,8 +20,8 @@ module.exports = (app) => {
   //app.post("/players:", game.createOne);
   app.post("/players:", gameController.checkPlayer);
 
-  // Delete a Playger with playerId
-  //app.post("/players/:playerId/games/:", gameController.playOneGame);
+  // Play one Game
+  app.post("/players/:playerId/games/:", gameController.playGame);
 
   // Retrieve all players from database
   app.get("/players/:", gameController.findAll);
@@ -41,7 +41,7 @@ module.exports = (app) => {
   // Retrieve best player
   app.get("/players/ranking/winner:", gameController.findBest);
 
-  // Delete a Playger with playerId
+  // Delete a Player with playerId
   app.delete("/players/:playerId/games:", gameController.deleteAll);
 
   // Page not available

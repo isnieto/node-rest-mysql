@@ -1,11 +1,41 @@
 //const { restart } = require("nodemon");
 const Game = require("../models/game.model.js");
 const Player = require("../models/player.model.js");
-const gameplay = require("../services/games.services.js");
+const playGame = require("../services/games.services.js");
 
 // Retrieve all games from the database.
 
 module.exports = {
+  // Create one player
+  createOne: async (req, res) => {
+    if (Object.keys(req.body).length === 0) {
+      console.log("Empty content. It can not be empty!");
+      res.status(400).send({
+        message: "Player needs a nickname!",
+      });
+    } else {
+      console.log(req.body);
+      try {
+        const player = new Player(req.body.name);
+        await Player.newPlayer(player.nickName);
+        res.json({ status: `New game added ${player.nickName}` });
+      } catch (e) {
+        res.status(500).json({ error: e.message });
+      }
+    }
+  },
+
+  playGame: async (req, res) => {
+    try {
+      let playerId = req.params.playerId;
+      let score = await playGame();
+      let result = await Game.addScore(playerId, score);
+      res.json({ status: "New game added" });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  },
+
   findAll: async (req, res) => {
     try {
       const results = await Player.getAllPlayers();
@@ -79,36 +109,6 @@ module.exports = {
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
-    }
-  },
-
-  // Create one player
-  createOne: async (req, res) => {
-    if (Object.keys(req.body).length === 0) {
-      console.log("Empty content. It can not be empty!");
-      res.status(400).send({
-        message: "Player needs a nickname!",
-      });
-    } else {
-      console.log(req.body);
-      try {
-        const player = new Player(req.body.name);
-        await Player.newPlayer(player.nickName);
-        res.json({ status: `New game added ${player.nickName}` });
-      } catch (e) {
-        res.status(500).json({ error: e.message });
-      }
-    }
-  },
-
-  playGame: async (req, res) => {
-    try {
-      let playerId = req.params.playerId;
-      let score = await playOneGame();
-      await Game.addScore(playerId, score);
-      res.json({ status: "New game added" });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
     }
   },
 

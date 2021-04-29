@@ -16,9 +16,12 @@ CREATE TABLE `players` (
   `player_id` INT NOT NULL,
   CONSTRAINT fk_players FOREIGN KEY (player_id)  
   REFERENCES players(player_id)  
-  ON DELETE CASCADE  
-  ON UPDATE CASCADE  
+ 
 );  
+
+/* avoid error in inserting data in games */
+SET GLOBAL FOREIGN_KEY_CHECKS=0;
+
 
 INSERT INTO players (nickName, registeredAt) VALUES ( 'manolito', CURDATE()), ( 'Pepon', CURDATE()),  ( 'menganito', CURDATE()), ( 'Kevin', CURDATE()) ;
 INSERT INTO games (round, result, player_id, won) VALUES ( NOW(), 5, 1, 0);

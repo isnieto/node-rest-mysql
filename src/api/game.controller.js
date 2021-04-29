@@ -1,5 +1,6 @@
 //const { restart } = require("nodemon");
 const Game = require("../models/game.model.js");
+const Player = require("../models/player.model.js");
 const gameplay = require("../services/games.services.js");
 
 // Retrieve all games from the database.
@@ -18,7 +19,7 @@ module.exports = {
   //Retrieve a single object
   findOne: async (req, res) => {
     try {
-      const results = await Game.findById(req.params.playerId);
+      const results = await Player.findById(req.params.playerId);
       res.status(201).send(results);
     } catch (e) {
       console.log(e.message);
@@ -91,8 +92,8 @@ module.exports = {
     } else {
       console.log(req.body);
       try {
-        const player = new Game(req.body.name);
-        await Game.newPlayer(player.nickName);
+        const player = new Player(req.body.name);
+        await Player.newPlayer(player.nickName);
         res.json({ status: `New game added ${player.nickName}` });
       } catch (e) {
         res.status(500).json({ error: e.message });
@@ -100,10 +101,10 @@ module.exports = {
     }
   },
 
-  playOneGame: async (req, res) => {
+  playGame: async (req, res) => {
     try {
       let playerId = req.params.playerId;
-      let score = await gameplay();
+      let score = await playOneGame();
       await Game.addScore(playerId, score);
       res.json({ status: "New game added" });
     } catch (e) {
@@ -114,7 +115,7 @@ module.exports = {
   checkPlayer: async (req, res) => {
     try {
       let playerName = req.body.name;
-      let data = await Game.checkIfPlayer(playerName);
+      let data = await Player.checkIfPlayer(playerName);
       res.status(200).json({ info: `${data}` });
     } catch (e) {
       res.status(500).json({ error: e.message });

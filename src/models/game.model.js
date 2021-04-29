@@ -1,18 +1,13 @@
-//  Import db.connection
+//  Import db.connection and Mysql Queries
 const mysql = require("../config/db-connection.js");
 const queries = require("../config/mysql-queries.js");
-//const { promise } = require("../config/db-connection.js");
 
 //  Player class and use the database connection above to add  CRUD methods:
 class Game {
-  constructor(playerName) {
-    this.nickName = playerName;
-  }
-
-  // Get all data from players
-  static getAllPlayers() {
-    return new Promise((resolve, reject) => {
-      mysql.query(queries.getAllPlayers, (err, res) => {
+  // New Game
+  static addScore(playerId, result) {
+    return new Promise((reject, resolve) => {
+      mysql.query(queries.addNewGame(playerId, result), (err, res) => {
         if (err) {
           reject(err);
         }
@@ -20,18 +15,6 @@ class Game {
       });
     });
   }
-
-  // Get one player by ID
-  static findById(playerId) {
-    return new Promise((resolve, reject) => {
-      mysql.query(queries.getOnePlayer(playerId), (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      });
-    });
-  } // Ende findByID
 
   // Get all scores from one player
   static getAllScoresFromPlayer(playerId) {
@@ -89,44 +72,6 @@ class Game {
           reject(err);
         }
         resolve(res);
-      });
-    });
-  }
-
-  static newPlayer(playerName) {
-    return new Promise((reject, resolve) => {
-      mysql.query(queries.createNewPlayer(playerName), (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        let confirmation = "created player: " + playerName;
-        console.log(confirmation);
-        resolve(res);
-      });
-    });
-  }
-
-  static addScore(playerId, result) {
-    return new Promise((reject, resolve) => {
-      mysql.query(queries.addNewGame(playerId, result), (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      });
-    });
-  }
-  // Check if PlayerName already existes in database
-  static checkIfPlayer(playerName) {
-    return new Promise((reject, resolve) => {
-      mysql.query(queries.checkData(playerName), (err, res) => {
-        // If Name no exists response is NULL
-        if (res.length === 0) {
-          console.log("Name not found in  database");
-          resolve({ message: "Name not found in  database" });
-        } else {
-          reject(err);
-        }
       });
     });
   }

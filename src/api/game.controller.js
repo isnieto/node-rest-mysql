@@ -1,5 +1,5 @@
-const { restart } = require("nodemon");
-const Game = require("../models/Game.model.js");
+//const { restart } = require("nodemon");
+const Game = require("../models/game.model.js");
 const gameplay = require("../services/games.services.js");
 
 // Retrieve all games from the database.

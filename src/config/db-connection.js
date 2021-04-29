@@ -1,7 +1,7 @@
 // Basic database conection with node.js
 // Database connection data comes from db.config.js
 const mysql = require("mysql2");
-const dbConfig = require("../config/db.config.js");
+const dbConfig = require("./db.config.js");
 
 // Create a connection to the database
 const connection = mysql.createConnection({

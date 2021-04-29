@@ -1,7 +1,7 @@
 //  Import db.connection
-const mysql = require("./db.js");
+const mysql = require("../config/db-connection.js");
 const queries = require("../config/mysql-queries.js");
-const { promise } = require("./db.js");
+const { promise } = require("../config/db-connection.js");
 
 //  Player class and use the database connection above to add  CRUD methods:
 class Game {

@@ -115,7 +115,7 @@ module.exports = {
     try {
       let playerName = req.body.name;
       let data = await Game.checkIfPlayer(playerName);
-      res.json({ info: `${data}` });
+      res.status(200).json({ info: `${data}` });
     } catch (e) {
       res.status(500).json({ error: e.message });
     }

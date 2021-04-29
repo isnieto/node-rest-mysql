@@ -116,20 +116,17 @@ class Game {
       });
     });
   }
-
+  // Check if PlayerName already existes in database
   static checkIfPlayer(playerName) {
-    return new Promise((reject, resolve)=>{
+    return new Promise((reject, resolve) => {
       mysql.query(queries.checkData(playerName), (err, res) => {
-        if (err) {
-          reject(err);
+        // If Name no exists response is NULL
+        if (res.length === 0) {
+          console.log("Name not found in  database");
+          resolve({ message: "Name not found in  database" });
         } else {
-          console.log("Hola");
-
-          if(!res) {resolve("No result")}
-          resolve(res);
+          reject(err);
         }
-        
-       
       });
     });
   }

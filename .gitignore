@@ -103,6 +103,7 @@ dist
 
 # Single files
 ToDoList.txt
+script.js
 
 # TernJS port file
 .tern-port

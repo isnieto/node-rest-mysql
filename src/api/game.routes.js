@@ -1,5 +1,5 @@
 // Setting route controllers for all endpoint of th app
-const express = require("express"); //or Router() needed;
+//const express = require("express"); //or Router() needed;
 
 /* These are routes we define:
 
@@ -17,8 +17,7 @@ module.exports = (app) => {
   const gameController = require("../api/game.controller.js");
 
   // Delete a Playger with playerId
-  //app.post("/players:", game.createOne);
-  app.post("/players:", gameController.checkPlayer);
+  app.post("/players:", gameController.createOne);
 
   // Play one Game
   app.post("/players/:playerId/games/:", gameController.playGame);
@@ -34,7 +33,7 @@ module.exports = (app) => {
 
   // Retrieve average ranking of all  players
   app.get("/players/ranking/:", gameController.findRanking);
- 
+
   // Retrieve worst player
   app.get("/players/ranking/loser:", gameController.findWorst);
 

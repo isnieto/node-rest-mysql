@@ -8,32 +8,42 @@ class Player {
   constructor(playerName) {
     this.nickName = playerName;
   }
-  
-   // Check if PlayerName already existes in database
-   static checkIfPlayer(playerName) {
-    return new Promise((reject, resolve) => {
-      mysql.query(queries.checkData(playerName), (err, res) => {
-        // If Name no exists response is NULL
-        if (res.length === 0) {
-          console.log("Name not found in  database");
-          resolve({ message: "Name not found in  database" });
-        } else {
-          reject(err);
-        }
-      });
-    });
-  }
-  
+
   // Create new Player [ IN PROCESS ]
   static newPlayer(playerName) {
     return new Promise((reject, resolve) => {
       mysql.query(queries.createNewPlayer(playerName), (err, res) => {
         if (err) {
+          console.log(err);
           reject(err);
         }
         let confirmation = "created player: " + playerName;
         console.log(confirmation);
+        console.log(res);
         resolve(res);
+      });
+    });
+  }
+
+  // Check if PlayerName already existes in database
+  static checkIfPlayerExists(playerName) {
+    return new Promise((reject, resolve) => {
+      // console.log(queries.searchByName(playerName) + "\n");
+      mysql.query(queries.searchByName(playerName), (err, res) => {
+        // If Name no exists response is NULL
+        try {
+          if (res.length === 0) {
+            console.log("Name not found in  database!!");
+            console.log(res);
+            resolve(res, null);
+          } else {
+            console.log("Name exists in database!");
+            console.log(res);
+            resolve(res);
+          }
+        } catch (e) {
+          reject(e);
+        }
       });
     });
   }
@@ -49,8 +59,6 @@ class Player {
       });
     });
   } // Ende findByID
-
- 
 
   // Get all data from players
   static getAllPlayers() {

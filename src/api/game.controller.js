@@ -7,21 +7,28 @@ const playGame = require("../services/games.services.js");
 
 module.exports = {
   // Create one player
-  createOne: async (req, res) => {
+  createOne: async (req, res, next) => {
     if (Object.keys(req.body).length === 0) {
-      console.log("Empty content. It can not be empty!");
-      res.status(400).send({
-        message: "Player needs a nickname!",
-      });
-    } else {
-      console.log(req.body);
-      try {
-        const player = new Player(req.body.name);
-        await Player.newPlayer(player.nickName);
-        res.json({ status: `New game added ${player.nickName}` });
-      } catch (e) {
-        res.status(500).json({ error: e.message });
+      await Player.newPlayer("ANÓNIMUS");
+      status.msg = "success";
+      status.code = 200;
+      res.json(status.msg);
+    }
+    try {
+      let temp = await Player.checkIfPlayerExists(req.body.name);
+      if (!temp) {
+        await Player.newPlayer(req.body.name);
+        status.msg = "success";
+        status.code = 200;
+        res.json(status.msg);
+      } else {
+        status.msg = "Sorry, Name already in database";
+        status.code = 400;
+        res.json(status.msg);
       }
+      
+    } catch (e) {
+      res.status(500);
     }
   },
 
@@ -110,16 +117,5 @@ module.exports = {
       console.log(e.message);
       res.sendStatus(500);
     }
-  },
-
-  checkPlayer: async (req, res) => {
-    try {
-      let playerName = req.body.name;
-      let data = await Player.checkIfPlayer(playerName);
-      res.status(200).json({ info: `${data}` });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
-    return res;
   },
 }; // End Module

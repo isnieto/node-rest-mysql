@@ -15,26 +15,28 @@ class Player {
       mysql.query(queries.createNewPlayer(playerName), (err, res) => {
         if (!err) {
           reject(err);
-        } else { 
+        } else {
           resolve(res);
-        };
+        }
       });
-    });
+    }).catch(error => { console.log('caught', error.message); });;
   }
 
   // Check if PlayerName already existes in database
   static checkIfPlayerExists(playerName) {
     return new Promise((reject, resolve) => {
       // console.log(queries.searchByName(playerName) + "\n");
-      mysql.query(queries.searchByName(playerName), (err, res) => {
+      mysql.query(queries.searchByName(playerName), (err, res, rows) => {
         // If Name no exists response is NULL
-        if (!err) {
-          console.log("Player exists already");
+        if (err) {
           reject(res);
-        } else {
-          console.log("aqui resolve")
-          resolve(res);
-        }
+        } 
+        if(res.length !== 0){
+            console.log("Si está en DB");
+            resolve(res);
+          } else {
+          console.log("NO está en DB");
+          resolve(res, rows);}
       });
     });
   }

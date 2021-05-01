@@ -12,12 +12,18 @@ module.exports = {
       await Player.newPlayer("Anonimo");
       res.status(201).json({message: "New player added as anonymus"});
     } 
-      let checked = await Player.checkIfPlayerExists(req.body.name);
-      if (checked === null){
+    
+      let checked = Player.checkIfPlayerExists(req.body.name)
+      .catch(error => { console.log('caught', error.message); console.log(checked)});
+      try{
+      if (checked === undefined){
         res.status(404).json({checked})
       } else {
         res.status(501).json({"message": "player already exists", checked})
       }
+    } catch(e){
+      res.status(400)
+    }
    /*  }
       try {
        

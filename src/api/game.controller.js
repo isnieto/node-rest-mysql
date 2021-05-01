@@ -36,11 +36,10 @@ module.exports = {
       let playerId = req.params.playerId;
       let score = await playGame();
       await Game.addScore(playerId, score);
-      res.send({ status: 200, data: ["New Game added"] });
-      next(); 
+      res.status(201).json({message: "New game added!"});
     } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
+      res.status(404).json({ error: e });
+    } 
   },
 
   findAll: async (req, res) => {

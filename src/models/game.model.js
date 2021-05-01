@@ -5,13 +5,15 @@ const queries = require("../config/mysql-queries.js");
 //  Player class and use the database connection above to add  CRUD methods:
 class Game {
   // New Game
-  static addScore(playerId, result) {
+  static addScore(playerId, score) {
     return new Promise((reject, resolve) => {
-      mysql.query(queries.addNewGame(playerId, result), (err, res) => {
-        if (err) {
+      mysql.query(queries.addNewGame(playerId, score), (err, res) => {
+        if (!err) {
           reject(err);
-        }
-        resolve(res);
+        } else { 
+          resolve(res);
+        };
+
       });
     });
   }

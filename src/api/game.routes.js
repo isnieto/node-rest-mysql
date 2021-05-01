@@ -20,7 +20,7 @@ module.exports = (app) => {
   app.post("/players:", gameController.createOne);
 
   // Play one Game
-  app.post("/players/:playerId/games/:", gameController.playGame);
+  app.post("/players/:playerId/games/:", gameController.playOneGame);
 
   // Retrieve all players from database
   app.get("/players/:", gameController.findAll);

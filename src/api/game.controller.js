@@ -16,7 +16,7 @@ module.exports = {
     }
     try {
       let temp = await Player.checkIfPlayerExists(req.body.name);
-      if (!temp) {
+      if (temp.length === 0) {
         await Player.newPlayer(req.body.name);
         status.msg = "success";
         status.code = 200;
@@ -26,18 +26,18 @@ module.exports = {
         status.code = 400;
         res.json(status.msg);
       }
-      
     } catch (e) {
       res.status(500);
     }
   },
 
-  playGame: async (req, res) => {
+  playOneGame: async (req, res, next) => {
     try {
       let playerId = req.params.playerId;
       let score = await playGame();
-      let result = await Game.addScore(playerId, score);
-      res.json({ status: "New game added" });
+      await Game.addScore(playerId, score);
+      res.send({ status: 200, data: ["New Game added"] });
+      next(); 
     } catch (e) {
       res.status(500).json({ error: e.message });
     }
@@ -46,7 +46,7 @@ module.exports = {
   findAll: async (req, res) => {
     try {
       const results = await Player.getAllPlayers();
-      res.status(201).send(results);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -57,7 +57,7 @@ module.exports = {
   findOne: async (req, res) => {
     try {
       const results = await Player.findById(req.params.playerId);
-      res.status(201).send(results);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -68,7 +68,7 @@ module.exports = {
   gamesAll: async (req, res) => {
     try {
       const results = await Game.getAllScoresFromPlayer(req.params.playerId);
-      res.status(201).send(results);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -79,7 +79,7 @@ module.exports = {
   findRanking: async (req, res) => {
     try {
       const results = await Game.getRanking();
-      res.status(201).send(results);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -90,7 +90,7 @@ module.exports = {
   findWorst: async (req, res) => {
     try {
       const results = await Game.findLoser();
-      res.status(201).send(results);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -112,10 +112,10 @@ module.exports = {
   deleteAll: async (req, res) => {
     try {
       const results = await Game.deleteGames(req.params.playerId);
-      res.status(201).send(results);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
-      res.sendStatus(500);
+      res.sendStatus(400);
     }
   },
 }; // End Module

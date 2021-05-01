@@ -9,26 +9,28 @@ module.exports = {
   // Create one player
   createOne: async (req, res, next) => {
     if (Object.keys(req.body).length === 0) {
-      await Player.newPlayer("ANÓNIMUS");
-      status.msg = "success";
-      status.code = 200;
-      res.json(status.msg);
-    }
-    try {
-      let temp = await Player.checkIfPlayerExists(req.body.name);
-      if (temp.length === 0) {
-        await Player.newPlayer(req.body.name);
-        status.msg = "success";
-        status.code = 200;
-        res.json(status.msg);
+      await Player.newPlayer("Anonimo");
+      res.status(201).json({message: "New player added as anonymus"});
+    } 
+      let checked = await Player.checkIfPlayerExists(req.body.name);
+      if (checked === null){
+        res.status(404).json({checked})
       } else {
-        status.msg = "Sorry, Name already in database";
-        status.code = 400;
-        res.json(status.msg);
+        res.status(501).json({"message": "player already exists", checked})
       }
-    } catch (e) {
-      res.status(500);
-    }
+   /*  }
+      try {
+       
+        if (checked.length === 0) {
+          await Player.newPlayer(req.body.name);
+          res.status(201).json({message: "New player added!"});
+        } else {
+          res.status(501).json({message: "Sorry, player already exists."});
+        }
+      } catch (e) {
+        let error =  "salta";
+        res.status(500).json({error, e});
+      } */
   },
 
   playOneGame: async (req, res, next) => {

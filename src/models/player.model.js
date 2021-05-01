@@ -13,14 +13,11 @@ class Player {
   static newPlayer(playerName) {
     return new Promise((reject, resolve) => {
       mysql.query(queries.createNewPlayer(playerName), (err, res) => {
-        if (err) {
-          console.log(err);
+        if (!err) {
           reject(err);
-        }
-        let confirmation = "created player: " + playerName;
-        console.log(confirmation);
-        console.log(res);
-        resolve(res);
+        } else { 
+          resolve(res);
+        };
       });
     });
   }
@@ -31,18 +28,12 @@ class Player {
       // console.log(queries.searchByName(playerName) + "\n");
       mysql.query(queries.searchByName(playerName), (err, res) => {
         // If Name no exists response is NULL
-        try {
-          if (res.length === 0) {
-            console.log("Name not found in  database!!");
-            console.log(res);
-            resolve(res, null);
-          } else {
-            console.log("Name exists in database!");
-            console.log(res);
-            resolve(res);
-          }
-        } catch (e) {
-          reject(e);
+        if (!err) {
+          console.log("Player exists already");
+          reject(res);
+        } else {
+          console.log("aqui resolve")
+          resolve(res);
         }
       });
     });

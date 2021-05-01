@@ -10,10 +10,9 @@ class Game {
       mysql.query(queries.addNewGame(playerId, score), (err, res) => {
         if (!err) {
           reject(err);
-        } else { 
+        } else {
           resolve(res);
-        };
-
+        }
       });
     });
   }

@@ -92,7 +92,7 @@ class Game {
       });
     });
   }
-
+/* 
   static newPlayer(playerName) {
     return new Promise((reject, resolve) => {
       mysql.query(queries.createNewPlayer(playerName), (err, res) => {
@@ -104,7 +104,7 @@ class Game {
         resolve(res);
       });
     });
-  }
+  } */
 
   static addScore(playerId, result) {
     return new Promise((reject, resolve) => {
@@ -117,7 +117,7 @@ class Game {
     });
   }
   // Check if PlayerName already existes in database
-  static checkIfPlayer(playerName) {
+/*   static checkIfPlayer(playerName) {
     return new Promise((reject, resolve) => {
       mysql.query(queries.checkData(playerName), (err, res) => {
         // If Name no exists response is NULL
@@ -129,7 +129,7 @@ class Game {
         }
       });
     });
-  }
+  } */
 } // END CLass Game
 
 // Export

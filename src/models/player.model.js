@@ -49,18 +49,36 @@ class Player {
   } */
 
   // Create new Player [ IN PROCESS ]
-  static updateName(newName, playerName) {
-    return new Promise((reject, resolve) => {
-      mysql.query(queries.modifyName(newName, playerName), (err, res) => {
-        if (!err) {
-          reject(err);
+  /* static async updateName(playerId, newName) {
+      mysql.query(queries.modifyPlayerName(playerId, newName), (err, res) => {
+        if (err) {
+          console.log("Da error el query " + err)
+          return err;
+        } else if (res.affectedRows === 1) {
+          console.log("Update con un " + JSON.stringify(res.affectedRows))
+          return true;
         } else {
-          resolve(res);
+          console.log("No update con un " + JSON.stringify(res.affectedRows))
+          return false;
         }
       });
-    }).catch((error) => {
-      console.log("error", error.message);
-    });
+      return;
+  } */
+  static updateName(playerId, newName) {
+    return new Promise((reject, resolve) => {
+      mysql.query(queries.modifyPlayerName(playerId, newName), (err, res) => {
+        if (err) {
+          console.log("Da error el query " + err)
+          reject(err);
+        } else if (res.affectedRows === 1) {
+          console.log("Update con un " + JSON.stringify(res.affectedRows))
+          resolve(true);
+        } else {
+          console.log("No update con un " + JSON.stringify(res.affectedRows))
+          resolve(false);
+        }
+      });
+    })
   }
 
   // Get one player by ID

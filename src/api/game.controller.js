@@ -13,7 +13,6 @@ module.exports = {
       res.status(201).json({ message: "New player added as anonymus" });
     } else {
       try {
-        let checked = false;
         checked = await Player.checkIfPlayerExists(req.body.name).catch(e => e);
         if (checked === true) {
           await Player.newPlayer(req.body.name);
@@ -30,32 +29,25 @@ module.exports = {
       }
   
     }
-    // Promise.All() avoid promise rejection error
-    
-    /* if (checked === undefined) {
-      await Player.newPlayer(req.body.name);
-      res.status(201).json({ message: "New Player added" });
-    } else {
-      res.status(501).json({ message: `player already EXISTS result ${checked}`});
-    } */
   },
-
+  // Update name of player by ID
   updateOne: async (req, res) => {
     if (Object.keys(req.body).length === 0) {
       res.status(400).send({ message: "Content can not be empty!" });
-    }
-
-    let checked = await Promise.all([
-      Player.checkIfPlayerExists(req.body.name).catch((error) => {
-        console.log("error message", error.message);
-      }),
-    ]);
-    //
-    Player.updateName(req.body.newName, req.body.nickName);
-    if (checked === null) {
-      res.status(201).json({ message: checked });
-    } else {
-      res.status(501).json({ message: "Player already exists", checked });
+    }  else {
+      try {
+      
+          const result = await Player.updateName(req.body.playerid, req.body.newName).catch(e => e);
+          if(result === true){
+            res.status(201).json({ message: "Name updated! " + result });
+          } else {
+            res.status(404).json({ message: "Name could not be updated!" + result });
+          }
+      } catch (e) {
+        res
+          .status(500)
+          .json({ message: e });
+      }
     }
   },
 

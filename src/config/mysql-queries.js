@@ -3,8 +3,8 @@ module.exports = {
     return `INSERT INTO players (nickName, registeredAt) VALUES ( '${playerName}', CURDATE())`;
   },
 
-  modifyPlayerName: (newName, playerName) => {
-    return `UPDATE players SET nickName = '${newName}' WHERE playerName = '${playerName}'`;
+  modifyPlayerName: (playerId, newName) => {
+    return `UPDATE players SET nickName = '${newName}' WHERE player_id = '${playerId}'`;
   }, 
 
   addNewGame: (playerId, result) => {

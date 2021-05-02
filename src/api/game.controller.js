@@ -1,14 +1,79 @@
 //const { restart } = require("nodemon");
 const Game = require("../models/game.model.js");
-const gameplay = require("../services/games.services.js");
+const Player = require("../models/player.model.js");
+const playGame = require("../services/games.services.js");
 
 // Retrieve all games from the database.
 
 module.exports = {
+  // Create one player
+  createOne: async (req, res) => {
+    if (Object.keys(req.body).length === 0) {
+      await Player.newPlayer("Anonimo");
+      res.status(201).json({ message: "New player added as anonymus" });
+    } else {
+      try {
+        let checked = false;
+        checked = await Player.checkIfPlayerExists(req.body.name).catch(e => e);
+        if (checked === true) {
+          await Player.newPlayer(req.body.name);
+          res.status(201).json({ message: "New Player added " + checked });
+        } else if (checked === false) {
+          res
+            .status(501)
+            .json({ message: `player already EXISTS ` + checked  });
+        }
+      } catch (e) {
+        res
+          .status(500)
+          .json({ message: e });
+      }
+  
+    }
+    // Promise.All() avoid promise rejection error
+    
+    /* if (checked === undefined) {
+      await Player.newPlayer(req.body.name);
+      res.status(201).json({ message: "New Player added" });
+    } else {
+      res.status(501).json({ message: `player already EXISTS result ${checked}`});
+    } */
+  },
+
+  updateOne: async (req, res) => {
+    if (Object.keys(req.body).length === 0) {
+      res.status(400).send({ message: "Content can not be empty!" });
+    }
+
+    let checked = await Promise.all([
+      Player.checkIfPlayerExists(req.body.name).catch((error) => {
+        console.log("error message", error.message);
+      }),
+    ]);
+    //
+    Player.updateName(req.body.newName, req.body.nickName);
+    if (checked === null) {
+      res.status(201).json({ message: checked });
+    } else {
+      res.status(501).json({ message: "Player already exists", checked });
+    }
+  },
+
+  playOneGame: async (req, res, next) => {
+    try {
+      let playerId = req.params.playerId;
+      let score = await playGame();
+      await Game.addScore(playerId, score);
+      res.status(201).json({ message: "New game added!" });
+    } catch (e) {
+      res.status(404).json({ error: e });
+    }
+  },
+
   findAll: async (req, res) => {
     try {
-      const results = await Game.getAllPlayers();
-      res.status(201).send(results);
+      const results = await Player.getAllPlayers();
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -18,8 +83,8 @@ module.exports = {
   //Retrieve a single object
   findOne: async (req, res) => {
     try {
-      const results = await Game.findById(req.params.playerId);
-      res.status(201).send(results);
+      const results = await Player.findById(req.params.playerId);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -30,18 +95,18 @@ module.exports = {
   gamesAll: async (req, res) => {
     try {
       const results = await Game.getAllScoresFromPlayer(req.params.playerId);
-      res.status(201).send(results);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
     }
   },
 
-  // Retrieve worst player
+  // Retrieve Ranking of all players
   findRanking: async (req, res) => {
     try {
       const results = await Game.getRanking();
-      res.status(201).send(results);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -52,7 +117,7 @@ module.exports = {
   findWorst: async (req, res) => {
     try {
       const results = await Game.findLoser();
-      res.status(201).send(results);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -74,51 +139,10 @@ module.exports = {
   deleteAll: async (req, res) => {
     try {
       const results = await Game.deleteGames(req.params.playerId);
-      res.status(201).send(results);
+      res.status(200).send(results);
     } catch (e) {
       console.log(e.message);
-      res.sendStatus(500);
+      res.sendStatus(400);
     }
-  },
-
-  // Create one player
-  createOne: async (req, res) => {
-    if (Object.keys(req.body).length === 0) {
-      console.log("Empty content. It can not be empty!");
-      res.status(400).send({
-        message: "Player needs a nickname!",
-      });
-    } else {
-      console.log(req.body);
-      try {
-        const player = new Game(req.body.name);
-        await Game.newPlayer(player.nickName);
-        res.json({ status: `New game added ${player.nickName}` });
-      } catch (e) {
-        res.status(500).json({ error: e.message });
-      }
-    }
-  },
-
-  playOneGame: async (req, res) => {
-    try {
-      let playerId = req.params.playerId;
-      let score = await gameplay();
-      await Game.addScore(playerId, score);
-      res.json({ status: "New game added" });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
-  },
-
-  checkPlayer: async (req, res) => {
-    try {
-      let playerName = req.body.name;
-      let data = await Game.checkIfPlayer(playerName);
-      res.status(200).json({ info: `${data}` });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
-    return res;
   },
 }; // End Module

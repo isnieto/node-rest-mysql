@@ -3,6 +3,10 @@ module.exports = {
     return `INSERT INTO players (nickName, registeredAt) VALUES ( '${playerName}', CURDATE())`;
   },
 
+  modifyPlayerName: (newName, playerName) => {
+    return `UPDATE players SET nickName = '${newName}' WHERE playerName = '${playerName}'`;
+  }, 
+
   addNewGame: (playerId, result) => {
     return `INSERT INTO games (round, result, player_id, won) VALUES ( NOW(), '${result}', '${playerId}', (CASE WHEN result >= 6 THEN 1 ELSE 0 END));`;
   },
@@ -15,7 +19,7 @@ module.exports = {
     return `SELECT * FROM games WHERE player_id= ${playerId} ORDER BY round ASC`;
   },
 
-  checkData: (playerName) => {
+  searchByName: (playerName) => {
     return `SELECT * FROM players WHERE nickName = '${playerName}'`;
   },
 

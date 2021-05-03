@@ -9,36 +9,76 @@ class Player {
     this.nickName = playerName;
   }
 
+  // Check if PlayerName already existes in database
+  static checkIfPlayerExists(playerName) {
+    return new Promise((reject, resolve) => {
+      mysql.query(queries.searchByName(playerName), (err, res) => {
+        // If Name no exists response is NULL
+        if (err || res.length !== 0) {
+          console.log("Name is already in DB\n", res);
+          reject(false);
+        } else {
+          console.log("NO name found in DB\n", res);
+          resolve(true);
+        }
+      });
+    });
+  }
+
   // Create new Player [ IN PROCESS ]
+  static async newPlayer(playerName) {
+      mysql.query(queries.createNewPlayer(playerName), (err, res) => {
+        if (err) {
+          return err;
+        } 
+        console.log("Player name introduced\n", res);
+        return res;
+      });
+  }
+  /* // Create new Player [ IN PROCESS ]
   static newPlayer(playerName) {
     return new Promise((reject, resolve) => {
       mysql.query(queries.createNewPlayer(playerName), (err, res) => {
-        if (!err) {
+        if (err) {
           reject(err);
         } else {
           resolve(res);
         }
       });
-    }).catch(error => { console.log('caught', error.message); });;
-  }
+    })
+  } */
 
-  // Check if PlayerName already existes in database
-  static checkIfPlayerExists(playerName) {
-    return new Promise((reject, resolve) => {
-      // console.log(queries.searchByName(playerName) + "\n");
-      mysql.query(queries.searchByName(playerName), (err, res, rows) => {
-        // If Name no exists response is NULL
+  // Create new Player [ IN PROCESS ]
+  /* static async updateName(playerId, newName) {
+      mysql.query(queries.modifyPlayerName(playerId, newName), (err, res) => {
         if (err) {
-          reject(res);
-        } 
-        if(res.length !== 0){
-            console.log("Si está en DB");
-            resolve(res);
-          } else {
-          console.log("NO está en DB");
-          resolve(res, rows);}
+          console.log("Da error el query " + err)
+          return err;
+        } else if (res.affectedRows === 1) {
+          console.log("Update con un " + JSON.stringify(res.affectedRows))
+          return true;
+        } else {
+          console.log("No update con un " + JSON.stringify(res.affectedRows))
+          return false;
+        }
       });
-    });
+      return;
+  } */
+  static updateName(playerId, newName) {
+    return new Promise((reject, resolve) => {
+      mysql.query(queries.modifyPlayerName(playerId, newName), (err, res) => {
+        if (err) {
+          console.log("Da error el query " + err)
+          reject(err);
+        } else if (res.affectedRows === 1) {
+          console.log("Update con un " + JSON.stringify(res.affectedRows))
+          resolve(true);
+        } else {
+          console.log("No update con un " + JSON.stringify(res.affectedRows))
+          resolve(false);
+        }
+      });
+    })
   }
 
   // Get one player by ID

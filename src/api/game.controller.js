@@ -7,36 +7,48 @@ const playGame = require("../services/games.services.js");
 
 module.exports = {
   // Create one player
-  createOne: async (req, res, next) => {
+  createOne: async (req, res) => {
     if (Object.keys(req.body).length === 0) {
       await Player.newPlayer("Anonimo");
-      res.status(201).json({message: "New player added as anonymus"});
-    } 
-    
-      let checked = Player.checkIfPlayerExists(req.body.name)
-      .catch(error => { console.log('caught', error.message); console.log(checked)});
-      try{
-      if (checked === undefined){
-        res.status(404).json({checked})
-      } else {
-        res.status(501).json({"message": "player already exists", checked})
-      }
-    } catch(e){
-      res.status(400)
-    }
-   /*  }
+      res.status(201).json({ message: "New player added as anonymus" });
+    } else {
       try {
-       
-        if (checked.length === 0) {
+        checked = await Player.checkIfPlayerExists(req.body.name).catch(e => e);
+        if (checked === true) {
           await Player.newPlayer(req.body.name);
-          res.status(201).json({message: "New player added!"});
-        } else {
-          res.status(501).json({message: "Sorry, player already exists."});
+          res.status(201).json({ message: "New Player added " + checked });
+        } else if (checked === false) {
+          res
+            .status(501)
+            .json({ message: `player already EXISTS ` + checked  });
         }
       } catch (e) {
-        let error =  "salta";
-        res.status(500).json({error, e});
-      } */
+        res
+          .status(500)
+          .json({ message: e });
+      }
+  
+    }
+  },
+  // Update name of player by ID
+  updateOne: async (req, res) => {
+    if (Object.keys(req.body).length === 0) {
+      res.status(400).send({ message: "Content can not be empty!" });
+    }  else {
+      try {
+      
+          const result = await Player.updateName(req.body.playerid, req.body.newName).catch(e => e);
+          if(result === true){
+            res.status(201).json({ message: "Name updated! " + result });
+          } else {
+            res.status(404).json({ message: "Name could not be updated!" + result });
+          }
+      } catch (e) {
+        res
+          .status(500)
+          .json({ message: e });
+      }
+    }
   },
 
   playOneGame: async (req, res, next) => {

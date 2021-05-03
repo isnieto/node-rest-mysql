@@ -23,6 +23,10 @@ module.exports = {
     return `SELECT * FROM players WHERE nickName = '${playerName}'`;
   },
 
+  searchId: (playerId) => {
+    return `SELECT * FROM players WHERE player_id = '${playerId}'`;
+  },
+
   getAllPlayers: "SELECT * FROM players",
 
   getRankigAll:

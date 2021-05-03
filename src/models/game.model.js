@@ -76,20 +76,8 @@ class Game {
       });
     });
   }
-/* 
-  static newPlayer(playerName) {
-    return new Promise((reject, resolve) => {
-      mysql.query(queries.createNewPlayer(playerName), (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        let confirmation = "created player: " + playerName;
-        console.log(confirmation);
-        resolve(res);
-      });
-    });
-  } */
 
+ /*  // Add score to player
   static addScore(playerId, result) {
     return new Promise((reject, resolve) => {
       mysql.query(queries.addNewGame(playerId, result), (err, res) => {
@@ -99,21 +87,8 @@ class Game {
         resolve(res);
       });
     });
-  }
-  // Check if PlayerName already existes in database
-/*   static checkIfPlayer(playerName) {
-    return new Promise((reject, resolve) => {
-      mysql.query(queries.checkData(playerName), (err, res) => {
-        // If Name no exists response is NULL
-        if (res.length === 0) {
-          console.log("Name not found in  database");
-          resolve({ message: "Name not found in  database" });
-        } else {
-          reject(err);
-        }
-      });
-    });
   } */
+ 
 } // END CLass Game
 
 // Export

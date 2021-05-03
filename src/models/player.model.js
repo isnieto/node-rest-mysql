@@ -8,7 +8,7 @@ class Player {
     this.nickName = playerName;
   }
 
-  // Check if PlayerName already existes in database
+  // Check if PlayerName already exists in database
   static checkIfPlayerExists(playerName) {
     return new Promise((reject, resolve) => {
       mysql.query(queries.searchByName(playerName), (err, res) => {
@@ -32,18 +32,33 @@ class Player {
       });
   }
  
+  // Check if playerID is right and in database 
+  static checkIfIdExists(playerid) {
+    return new Promise((reject, resolve) => {
+      console.log(queries.searchId(playerid))
+      mysql.query(queries.searchId(playerid), (err, res) => {
+        // If playerId no exists response is false
+        if (err) {
+          reject(err);
+        }
+        if (res.length !== 0 ) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  }
+
   // Modify Name of a player
   static updateName(playerId, newName) {
     return new Promise((reject, resolve) => {
       mysql.query(queries.modifyPlayerName(playerId, newName), (err, res) => {
         if (err) {
-          console.log("Da error el query " + err)
           reject(err);
         } else if (res.affectedRows === 1) {
-          console.log("Update con un " + JSON.stringify(res.affectedRows))
           resolve(true);
         } else {
-          console.log("No update con un " + JSON.stringify(res.affectedRows))
           resolve(false);
         }
       });

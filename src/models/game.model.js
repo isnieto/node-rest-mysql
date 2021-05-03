@@ -34,10 +34,8 @@ class Game {
     return new Promise((resolve, reject) => {
       mysql.query(queries.getRankigAll, (err, res) => {
         if (err) {
-          console.log("llega al reject")
           reject(err);
         } else {
-          console.log("pasa al resolve")
         resolve(res);
       }
       });

@@ -25,7 +25,6 @@ class Player {
   // Check if playerID is right and in database
   static checkIfIdExists(playerid) {
     return new Promise((reject, resolve) => {
-      console.log(queries.searchId(playerid));
       mysql.query(queries.searchId(playerid), (err, res) => {
         // If playerId no exists response is false
         if (err) {

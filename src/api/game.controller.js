@@ -107,12 +107,17 @@ module.exports = {
 
   // Retrieve a single player score list
   gamesAll: async (req, res) => {
-    try {
-      const results = await Game.getAllScoresFromPlayer(req.params.playerId);
-      res.status(200).send(results);
-    } catch (e) {
-      console.log(e.message);
-      res.sendStatus(500);
+    let playerIdExist = false;
+    playerIdExist = await Player.checkIfIdExists(req.params.playerId).catch((e) => e);
+    if (!playerIdExist) {
+          res.status(400).json({ message: "Sorry, PlayerId is not correct." });
+    } else {
+      try {
+        const results = await Game.getAllScoresFromPlayer(req.params.playerId);
+        res.status(200).json(results);
+      } catch (e) {
+        res.status(500).json({ message: e });
+      }
     }
   },
 

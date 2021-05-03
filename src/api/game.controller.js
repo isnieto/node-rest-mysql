@@ -8,45 +8,47 @@ const playGame = require("../services/games.services.js");
 module.exports = {
   // Create one player
   createOne: async (req, res) => {
-    if (Object.keys(req.body).length === 0) {
+    // if content empty or no content player saved as anonymus
+    if ((Object.keys(req.body).length === 0) || (req.body.name === '') || (req.body.name === ' ')) {
       await Player.newPlayer("Anonimo");
-      res.status(201).json({ message: "New player added as anonymus" });
+      res.status(201).json({ message: "New player added as ANONIMUS" });
     } else {
       try {
-        checked = await Player.checkIfPlayerExists(req.body.name).catch(e => e);
-        if (checked === true) {
+        checked = await Player.checkIfPlayerExists(req.body.name).catch((e) => e);
+        if (checked) {
           await Player.newPlayer(req.body.name);
-          res.status(201).json({ message: "New Player added " + checked });
-        } else if (checked === false) {
           res
-            .status(501)
-            .json({ message: `player already EXISTS ` + checked  });
+            .status(201)
+            .json({ message: `New player '${req.body.name}' succesfully added in database.` });
+        } else {
+          res.status(501).json({
+            message: `Sorry, but player '${req.body.name}' already exists in database.`,
+          });
         }
       } catch (e) {
-        res
-          .status(500)
-          .json({ message: e });
+        res.status(500).json({ message: e });
       }
-  
     }
   },
   // Update name of player by ID
   updateOne: async (req, res) => {
     if (Object.keys(req.body).length === 0) {
       res.status(400).send({ message: "Content can not be empty!" });
-    }  else {
+    } else {
       try {
-      
-          const result = await Player.updateName(req.body.playerid, req.body.newName).catch(e => e);
-          if(result === true){
-            res.status(201).json({ message: "Name updated! " + result });
-          } else {
-            res.status(404).json({ message: "Name could not be updated!" + result });
-          }
+        const result = await Player.updateName(
+          req.body.playerid,
+          req.body.newName
+        ).catch((e) => e);
+        if (result === true) {
+          res.status(201).json({ message: "Name updated! " + result });
+        } else {
+          res
+            .status(404)
+            .json({ message: "Name could not be updated!" + result });
+        }
       } catch (e) {
-        res
-          .status(500)
-          .json({ message: e });
+        res.status(500).json({ message: e });
       }
     }
   },
@@ -56,10 +58,10 @@ module.exports = {
       let playerId = req.params.playerId;
       let score = await playGame();
       await Game.addScore(playerId, score);
-      res.status(201).json({message: "New game added!"});
+      res.status(201).json({ message: "New game added!" });
     } catch (e) {
       res.status(404).json({ error: e });
-    } 
+    }
   },
 
   findAll: async (req, res) => {

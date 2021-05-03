@@ -2,14 +2,9 @@
 
 module.exports = {
   HOST: "localhost",
-  USER: "ismael",
+  USER: "root",
   PASSWORD: "netnet44",
-<<<<<<< HEAD
-  DB: "dicegame"
-=======
-  DB: "dicegame",
->>>>>>> develop
+  DB: "juegodados",
 };
 
-//PASSWORD: "netnet44",(pczuhause)
-// PASSWORD: "Netnet44$$", (pcoffice)
+

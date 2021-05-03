@@ -11,7 +11,7 @@ module.exports = (app) => {
   app.put("/players", gameController.updateOne);
 
   // Play one Game
-  app.post("/players/:playerId/games/:", gameController.playOneGame);
+  app.post("/players/:playerId/games/", gameController.playOneGame);
 
   // Delete a Playger with playerId
   app.delete("/players/:playerId/games", gameController.deleteAll);
@@ -29,7 +29,7 @@ module.exports = (app) => {
   app.get("/players/ranking", gameController.findRanking);
 
   // Retrieve worst player
-  app.get("/players/ranking/loser:", gameController.findWorst);
+  app.get("/players/ranking/loser", gameController.findWorst);
 
   // Retrieve best player
   app.get("/players/ranking/winner", gameController.findBest);

@@ -36,8 +36,8 @@ class Game {
         if (err) {
           reject(err);
         } else {
-        resolve(res);
-      }
+          resolve(res);
+        }
       });
     });
   }
@@ -78,7 +78,7 @@ class Game {
     });
   }
 
- /*  // Add score to player
+  /*  // Add score to player
   static addScore(playerId, result) {
     return new Promise((reject, resolve) => {
       mysql.query(queries.addNewGame(playerId, result), (err, res) => {
@@ -89,7 +89,6 @@ class Game {
       });
     });
   } */
- 
 } // END CLass Game
 
 // Export

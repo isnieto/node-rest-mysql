@@ -129,6 +129,7 @@ module.exports = {
     } catch (e) {
       res.status(500).json({ message: e });
     }
+ 
   },
 
   // Retrieve best player

@@ -19,14 +19,14 @@ module.exports = (app) => {
   // Retrieve all players from database FALTA percentage mig
   app.get("/players/", gameController.findAll);
 
-  // Retrieve a single player score list (PENDING)
+  // Retrieve a single player score list
   app.get("/players/:playerId/games", gameController.gamesAll);
 
   // Retrieve a single player data by playerId
   app.get("/players/:playerId", gameController.findOne);
 
   // Retrieve average ranking of all  players
-  app.get("/players/ranking", gameController.findRanking);
+  app.get("/players/ranking/all", gameController.findRanking);
 
   // Retrieve worst player
   app.get("/players/ranking/loser", gameController.findWorst);

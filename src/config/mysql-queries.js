@@ -23,7 +23,7 @@ module.exports = {
     return `SELECT * FROM players WHERE nickName = '${playerName}'`;
   },
 
-  getAllPlayers: `SELECT * FROM players`,
+  getAllPlayers: "SELECT * FROM players",
 
   getRankigAll:
     "SELECT p.nickName, count(*) AS Games, CONCAT( ROUND(((sum(g.won) * 100) / count(*)), 0), '%')" +

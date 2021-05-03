@@ -58,17 +58,13 @@ module.exports = {
             req.body.newName
           ).catch((e) => e);
           if (result) {
-            res
-              .status(201)
-              .json({
-                message: `New name '${req.body.newName}' succesfully modify in database.`,
-              });
+            res.status(201).json({
+              message: `New name '${req.body.newName}' succesfully modify in database.`,
+            });
           } else {
-            res
-              .status(404)
-              .json({
-                message: "Sorry, Name could not be updated! Id not correct.",
-              });
+            res.status(404).json({
+              message: "Sorry, Name could not be updated! Id not correct.",
+            });
           }
         }
       } catch (e) {
@@ -126,8 +122,7 @@ module.exports = {
       const results = await Game.getRanking();
       res.status(200).send(results);
     } catch (e) {
-      console.log(e.message);
-      res.sendStatus(500);
+      res.status(500).json({ message: e });
     }
   },
 
@@ -155,12 +150,18 @@ module.exports = {
 
   // Delete one player by ID
   deleteAll: async (req, res) => {
-    try {
-      const results = await Game.deleteGames(req.params.playerId);
-      res.status(200).send(results);
-    } catch (e) {
-      console.log(e.message);
-      res.sendStatus(400);
+   // Check if playerid in database
+    let playerIdExist = false;
+    playerIdExist = await Player.checkIfIdExists(req.params.playerId).catch((e) => e);
+    if (!playerIdExist) {
+          res.status(400).json({ message: "Sorry, PlayerId is not correct." });
+    } else {
+      try {
+        const results = await Game.deleteGames(req.params.playerId);
+        res.status(200).json({ message: `All games from playerID ${req.params.playerId} deleted` })
+      } catch (e) {
+        res.status(400).json({ message: e });
+      }
     }
   },
 }; // End Module

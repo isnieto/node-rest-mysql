@@ -22,31 +22,31 @@ class Player {
     });
   }
 
-  // Create new Player [ IN PROCESS ]
-  static async newPlayer(playerName) {
-      mysql.query(queries.createNewPlayer(playerName), (err, res) => {
-        if (err) {
-          return err;
-        } 
-        return res;
-      });
-  }
- 
-  // Check if playerID is right and in database 
+  // Check if playerID is right and in database
   static checkIfIdExists(playerid) {
     return new Promise((reject, resolve) => {
-      console.log(queries.searchId(playerid))
+      console.log(queries.searchId(playerid));
       mysql.query(queries.searchId(playerid), (err, res) => {
         // If playerId no exists response is false
         if (err) {
           reject(err);
         }
-        if (res.length !== 0 ) {
+        if (res.length !== 0) {
           resolve(true);
         } else {
           resolve(false);
         }
       });
+    });
+  }
+
+  // Create new Player [ IN PROCESS ]
+  static async newPlayer(playerName) {
+    mysql.query(queries.createNewPlayer(playerName), (err, res) => {
+      if (err) {
+        return err;
+      }
+      return res;
     });
   }
 
@@ -62,7 +62,7 @@ class Player {
           resolve(false);
         }
       });
-    })
+    });
   }
 
   // Get one player by ID

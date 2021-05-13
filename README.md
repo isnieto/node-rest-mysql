@@ -1,4 +1,4 @@
-# Entrega d'exercici: Node REST Server + MongoDB/MySql + JWT
+# Entrega d'exercici: Node REST Server + MySql
 
 The following table shows overview of the Rest API and its
 routes:

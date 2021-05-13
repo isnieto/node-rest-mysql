@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
   host: process.env.PORTHOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
-  database: process.env.DB,
+  database: process.env.DB
 });
 
 // open the MySQL connection

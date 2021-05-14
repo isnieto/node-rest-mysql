@@ -9,16 +9,21 @@ Following features have been taken in considereation to build the API:
 - You can't delete a particular game, but you can delete the entire list of rolls per player. 
 - The software should be able to list all the players in the system, the success rate of each player and the average success rate of all the players in the system.
 - The software must respect the main design patterns.
+- 
+# Getting started
 
-## Code style
+To get the Node server running locally:
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
- 
-## Tech/framework used
-<b>Built with</b>
-- [Node](https://nodejs.org/es/)
-- [Express](https://expressjs.com/es/)
-- [MySQL](https://www.mysql.com/)
+- Clone this repository
+- `npm install` o `npm i` to install all required dependencies
+- Create mysql database with script located in - `scripts/` folder.
+- `npm start` to start the local server.
+- API server can be tested with Postman. For routes see "Features".
+
+# Code Overview
+
+## Dependencies
+- [mysql2](https://github.com/expressjs/express) - The server for handling and routing HTTP requests
 
 ## Features
 
@@ -33,22 +38,18 @@ Methods	Urls	Actions
 * GET     /players/ranking/loser      > Retrieve best player average pencentage
 * GET     /players/ranking/winner     > Retrieve worst player average pencentage
 
-## Installation
-1. Install Node 14 or later. You can use the package manager of your choice. 
-2. Clone this repository.
-3. Run npm i to install the dependencies.
-4. Create database with script located in ./scripts-folder
-5. Run npm start to start the badge server and the frontend dev server.
-6. Api server can be tested with Postman. For routes see "Features".
-
-## Observations
+## Application Structure
 The project try to implement best practices following the following structure:
 
 <p align="center">
     <img src="https://github.com/uzs7jf/node-rest-mysql/blob/master/public/rest-api-structure.png">
 </p>
 
-
+- `app.js` - The entry point to our application. This file defines our express server and connects it to MongoDB using mongoose. It also requires the routes and models we'll be using in the application.
+- `config/` - This folder contains configuration for passport as well as a central location for configuration/environment variables.
+- `routes/` - This folder contains the route definitions for our API.
+- `models/` - This folder contains the schema definitions for our Mongoose models.
+- 
 ## Related projects
 Here's a list of the related projects where you can find similar exercises with using other technologies:
 

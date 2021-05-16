@@ -28,7 +28,7 @@ To get the Node server running locally:
 <b>Built with</b>
 - [Node](https://nodejs.org/es/)
 - [Express](https://expressjs.com/es/)
-- [mysql2](https://github.com/expressjs/express) - The server for handling and routing HTTP requests
+- [mysql2](https://github.com/expressjs/express)
 
 ## Features
 

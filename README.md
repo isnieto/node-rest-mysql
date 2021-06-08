@@ -22,6 +22,7 @@ To get the Node server running locally:
 - Create mysql database with script located in - `scripts/` folder.
 - `npm start` to start the local server.
 - API server can be tested with Postman. For routes see "Features".
+-  Enviroment variables are place in .env_template for exercises purposes.
 
 ## Code style
 

@@ -74,13 +74,21 @@ module.exports = {
   },
   //  Player plays one game
   playOneGame: async (req, res, next) => {
-    try {
-      let playerId = req.params.playerId;
-      let score = await playGame();
-      await Game.addScore(playerId, score);
-      res.status(201).json({ message: "New game added!" });
-    } catch (e) {
-      res.status(404).json({ error: e });
+    let playerIdExist = false;
+    playerIdExist = await Player.checkIfIdExists(req.params.playerId).catch(
+      (e) => e
+    );
+    if (!playerIdExist) {
+      res.status(400).json({ message: "Sorry, PlayerId is not correct." });
+    } else {
+      try {
+        let playerId = req.params.playerId;
+        let score = await playGame();
+        await Game.addScore(playerId, score);
+        res.status(201).json({ message: "New game added!" });
+      } catch (e) {
+        res.status(404).json({ error: e });
+      }
     }
   },
   // Get all player data
@@ -145,7 +153,11 @@ module.exports = {
   findWorst: async (req, res) => {
     try {
       const results = await Game.findLoser();
-      res.status(200).send(results);
+      if (Object.keys(results).length === 0) {
+        res.status(200).send({ message: "empty database" });
+      } else {
+        res.status(200).send(results);
+      }
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -156,7 +168,11 @@ module.exports = {
   findBest: async (req, res) => {
     try {
       const results = await Game.findWinner();
-      res.status(201).send(results);
+      if (Object.keys(results).length === 0) {
+        res.status(200).send({ message: "empty database" });
+      } else {
+        res.status(200).send(results);
+      }
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);

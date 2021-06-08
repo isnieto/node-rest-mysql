@@ -20,15 +20,20 @@ To get the Node server running locally:
 - `npm start` to start the local server.
 - API server can be tested with Postman. For routes see "Features".
 
-# Code Overview
+## Code style
 
-## Dependencies
-- [mysql2](https://github.com/expressjs/express) - The server for handling and routing HTTP requests
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
+ 
+## Tech/framework used
+<b>Built with</b>
+- [Node](https://nodejs.org/es/)
+- [Express](https://expressjs.com/es/)
+- [mysql2](https://github.com/expressjs/express)
 
 ## Features
 
 Methods	Urls	Actions
-* POST    /players     				        > Add/Create a new player
+* POST    /players     				  > Add/Create a new player
 * PUT     /players                    > Update/Modify the name of an existing 
 * POST    /players/{id}/games/        > A player plays one round.
 * DELETE  /players/{id}/games         > Delete all rounds of a player
@@ -54,4 +59,4 @@ The project try to implement best practices following the following structure:
 Here's a list of the related projects where you can find similar exercises with using other technologies:
 
 - REST APi with NodeJS and MongoDB: https://github.com/uzs7jf/node-srv-mongodb
-- REST APi with NodeJS and MongoDB and JWT: [still in process]
+- REST APi with NodeJS and MongoDB and JWT: https://github.com/uzs7jf/node-rest-mongodb-JWT

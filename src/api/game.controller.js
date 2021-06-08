@@ -72,7 +72,7 @@ module.exports = {
       }
     }
   },
-
+  //  Player plays one game
   playOneGame: async (req, res, next) => {
     try {
       let playerId = req.params.playerId;
@@ -83,11 +83,15 @@ module.exports = {
       res.status(404).json({ error: e });
     }
   },
-
+  // Get all player data
   findAll: async (req, res) => {
     try {
       const results = await Player.getAllPlayers();
-      res.status(200).send(results);
+      if (Object.keys(results).length === 0) {
+        res.status(200).send({ message: "empty database" });
+      } else {
+        res.status(200).send(results);
+      }
     } catch (e) {
       console.log(e.message);
       res.sendStatus(500);
@@ -108,9 +112,11 @@ module.exports = {
   // Retrieve a single player score list
   gamesAll: async (req, res) => {
     let playerIdExist = false;
-    playerIdExist = await Player.checkIfIdExists(req.params.playerId).catch((e) => e);
+    playerIdExist = await Player.checkIfIdExists(req.params.playerId).catch(
+      (e) => e
+    );
     if (!playerIdExist) {
-          res.status(400).json({ message: "Sorry, PlayerId is not correct." });
+      res.status(400).json({ message: "Sorry, PlayerId is not correct." });
     } else {
       try {
         const results = await Game.getAllScoresFromPlayer(req.params.playerId);
@@ -125,11 +131,14 @@ module.exports = {
   findRanking: async (req, res) => {
     try {
       const results = await Game.getRanking();
-      res.status(200).send(results);
+      if (Object.keys(results).length === 0) {
+        res.status(200).send({ message: "empty database" });
+      } else {
+        res.status(200).send(results);
+      }
     } catch (e) {
       res.status(500).json({ message: e });
     }
- 
   },
 
   // Retrieve best player
@@ -156,15 +165,19 @@ module.exports = {
 
   // Delete one player by ID
   deleteAll: async (req, res) => {
-   // Check if playerid in database
+    // Check if playerid in database
     let playerIdExist = false;
-    playerIdExist = await Player.checkIfIdExists(req.params.playerId).catch((e) => e);
+    playerIdExist = await Player.checkIfIdExists(req.params.playerId).catch(
+      (e) => e
+    );
     if (!playerIdExist) {
-          res.status(400).json({ message: "Sorry, PlayerId is not correct." });
+      res.status(400).json({ message: "Sorry, PlayerId is not correct." });
     } else {
       try {
         const results = await Game.deleteGames(req.params.playerId);
-        res.status(200).json({ message: `All games from playerID ${req.params.playerId} deleted` })
+        res.status(200).json({
+          message: `All games from playerID ${req.params.playerId} deleted`,
+        });
       } catch (e) {
         res.status(400).json({ message: e });
       }

@@ -1,6 +1,5 @@
 // SERVER: App entry point
 const app = require("./app");
-//const bodyParser = require("body-parser");
 
 // SERVER: port variable
 const { PORT } = require("./config/index.js");
